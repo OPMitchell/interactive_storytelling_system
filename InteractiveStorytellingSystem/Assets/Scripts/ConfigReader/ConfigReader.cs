@@ -2,73 +2,49 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.IO;
+using UnityEngine;
 
 namespace InteractiveStorytellingSystem.ConfigReader
 {
     static class ConfigReader
     {
-        public static EmotionalPersonality ReadEmotionData (string personalXMLPath)
+        private static string applicationPath = Application.dataPath.ToString();
+
+        private static T StandardDeserialization<T>(string xmlPath, string rootElementName)
         {
-            XmlSerializer mySerializer = new XmlSerializer(typeof(EmotionalPersonality), new XmlRootAttribute { ElementName = "Emotions" });
-            if (File.Exists(personalXMLPath))
+            string absolutePath = applicationPath + "/_Data/" + xmlPath;
+            XmlSerializer mySerializer = new XmlSerializer(typeof(T), new XmlRootAttribute { ElementName = rootElementName });
+            if (File.Exists(absolutePath))
             {
-                using (FileStream myFileStream = new FileStream(personalXMLPath, FileMode.Open))
+                using (FileStream myFileStream = new FileStream(absolutePath, FileMode.Open))
                 {
-                    EmotionalPersonality e;
-                    e = (EmotionalPersonality)mySerializer.Deserialize(myFileStream);
-                    return e;
+                    T result;
+                    result = (T)mySerializer.Deserialize(myFileStream);
+                    return result;
                 }
             }
             else
-                throw new FileNotFoundException("Could not find personality file: " + personalXMLPath + "!");
+                throw new FileNotFoundException("Could not find personality file: " + absolutePath + "!");
+        }
+
+        public static EmotionalPersonality ReadEmotionData (string personalXMLPath)
+        {
+            return StandardDeserialization<EmotionalPersonality>(personalXMLPath, "Emotions");
         }
 
         public static List<Character> ReadCharacterData(string characterListXMLPath)
         {
-            XmlSerializer mySerializer = new XmlSerializer(typeof(List<Character>), new XmlRootAttribute { ElementName = "CharacterList" });
-            if (File.Exists(characterListXMLPath))
-            {
-                using (FileStream myFileStream = new FileStream(characterListXMLPath, FileMode.Open))
-                {
-                    List<Character> cl;
-                    cl = (List<Character>)mySerializer.Deserialize(myFileStream);
-                    return cl;
-                }
-            }
-            else
-                throw new FileNotFoundException("Could not find character list file: " + characterListXMLPath + "!");
+            return StandardDeserialization<List<Character>>(characterListXMLPath, "CharacterList");
         }
 
         public static List<Action> ReadActionList(string actionListXMLPath)
         {
-            XmlSerializer mySerializer = new XmlSerializer(typeof(List<Action>), new XmlRootAttribute { ElementName = "Actions" });
-            if (File.Exists(actionListXMLPath))
-            {
-                using (FileStream myFileStream = new FileStream(actionListXMLPath, FileMode.Open))
-                {
-                    List<Action> al;
-                    al = (List<Action>)mySerializer.Deserialize(myFileStream);
-                    return al;
-                }
-            }
-            else
-                throw new FileNotFoundException("Could not find action list file: " + actionListXMLPath + "!");
+            return StandardDeserialization<List<Action>>(actionListXMLPath, "Actions");
         }
 
         public static List<Dialog> ReadDialogList(string dialogListXMLPath)
         {
-            XmlSerializer mySerializer = new XmlSerializer(typeof(List<Dialog>), new XmlRootAttribute { ElementName = "Dialogs" });
-            if (File.Exists(dialogListXMLPath))
-            {
-                using (FileStream myFileStream = new FileStream(dialogListXMLPath, FileMode.Open))
-                {
-                    List<Dialog> dl;
-                    dl = (List<Dialog>)mySerializer.Deserialize(myFileStream);
-                    return dl;
-                }
-            }
-            else
-                throw new FileNotFoundException("Could not find dialog list file: " + dialogListXMLPath + "!");
+            return StandardDeserialization<List<Dialog>>(dialogListXMLPath, "Dialogs");
         }
 
     }
