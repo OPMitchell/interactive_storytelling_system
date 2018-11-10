@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Emotions>
+	<PersonalEmotion id="1002" name="Joy" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1003" name="Distress" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1004" name="Hope" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1005" name="Fear" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1006" name="Satisfaction" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1007" name="FearsConfirmed" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1008" name="Relief" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1009" name="Disappointment" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1010" name="Pride" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1011" name="Shame" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1012" name="Gratification" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<PersonalEmotion id="1013" name="Remorse" threshold="3" decay="5">
+		<Value>1</Value>
+	</PersonalEmotion>
+	<ExternalEmotion id="1015" name="HappyFor" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1016" name="Pity" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1017" name="Gloating" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1018" name="Resentment" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1019" name="Admiration" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1020" name="Reproach" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1021" name="Gratitude" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1022" name="Anger" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1023" name="Love" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+	<ExternalEmotion id="1024" name="Hate" threshold="3" decay="5">
+		<Value>
+			<KeyValuePair>
+				<Key>Oliver</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>Bethan</Key>
+				<Value>1</Value>
+			</KeyValuePair>
+		</Value>
+	</ExternalEmotion>
+</Emotions>

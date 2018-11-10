@@ -1,0 +1,11 @@
+<Dialogs>
+	<Dialog dialogid="Greeting">
+		<Value>Hey %t! How are you?</Value>
+	</Dialog>
+	<Dialog dialogid="Hug">
+		<Value>*Hugs %t*</Value>
+	</Dialog>
+	<Dialog dialogid="Slap">
+		<Value>*Slaps %t*</Value>
+	</Dialog>
+</Dialogs>
