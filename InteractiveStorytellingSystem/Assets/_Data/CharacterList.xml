@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<CharacterList>
-	<Character name="Oliver" personality="Oliver.xml" actionlist="Oliver_ActionList.xml"/>
-	<Character name="Bethan" personality="Bethan.xml" actionlist="Bethan_ActionList.xml"/>
-</CharacterList>

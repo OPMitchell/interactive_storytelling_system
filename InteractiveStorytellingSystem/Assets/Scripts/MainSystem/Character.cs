@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using UnityEngine;
 
 namespace InteractiveStorytellingSystem
 {
-    /// <summary>
-    /// Class for holding data on an individual character, including their personality and emotional profile
-    /// </summary>
-
-    public class Character
+    public class Character : MonoBehaviour
     {
-        [XmlAttribute("name")] public string Name { get; set; } //name of the character
-        [XmlAttribute("personality")] public string PersonalityPath { get; set; }
-        [XmlAttribute("actionlist")] public string ActionListPath { get; set; }
-        public EmotionalPersonality Personality { get; set; } //emotional personality of the character
-        public List<Action> ActionList { get; set; }
+        [SerializeField] private string Name; //name of the character
+        [SerializeField] private TextAsset PersonalityFile;
+        [SerializeField] private object ActionListFile;
+        public EmotionalPersonality Personality { get; private set; } //emotional personality of the character
+        public List<Action> ActionList { get; private set; }
+
+        public void Start()
+        {
+            CreatePersonality();
+            CreateActionList();
+        }
 
         public void CreatePersonality()
         {
-            //Read in emotional data from xml file for this character
-            this.Personality = ConfigReader.ConfigReader.ReadEmotionData(PersonalityPath);
+            this.Personality = ConfigReader.ConfigReader.ReadEmotionData(PersonalityFile.name + ".xml");
         }
 
         public void CreateActionList()
         {
-            this.ActionList = ConfigReader.ConfigReader.ReadActionList(ActionListPath);
+            //this.ActionList = ConfigReader.ConfigReader.ReadActionList(ActionListPath);
         }
     }
 }

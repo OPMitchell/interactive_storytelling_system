@@ -32,11 +32,6 @@ namespace InteractiveStorytellingSystem.ConfigReader
             return StandardDeserialization<EmotionalPersonality>(personalXMLPath, "Emotions");
         }
 
-        public static List<Character> ReadCharacterData(string characterListXMLPath)
-        {
-            return StandardDeserialization<List<Character>>(characterListXMLPath, "CharacterList");
-        }
-
         public static List<Action> ReadActionList(string actionListXMLPath)
         {
             return StandardDeserialization<List<Action>>(actionListXMLPath, "Actions");
