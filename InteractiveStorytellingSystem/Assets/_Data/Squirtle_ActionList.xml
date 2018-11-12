@@ -1,0 +1,4 @@
+<Actions>
+	<Action name="Greeting" sender="Squirtle" target="Pikachu" dialogid="Greeting"/>
+	<Action name="Hug" sender="Squirtle" target="Pikachu" dialogid="Hug"/>
+</Actions>

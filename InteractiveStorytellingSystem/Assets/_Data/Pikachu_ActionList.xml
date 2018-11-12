@@ -1,0 +1,3 @@
+<Actions>
+	<Action name="Slap" sender="Pikachu" target="Squirtle" dialogid="Slap"/>
+</Actions>

@@ -1,4 +1,0 @@
-<Actions>
-	<Action name="Greeting" sender="Oliver" target="Bethan" dialogid="Greeting"/>
-	<Action name="Hug" sender="Oliver" target="Bethan" dialogid="Hug"/>
-</Actions>

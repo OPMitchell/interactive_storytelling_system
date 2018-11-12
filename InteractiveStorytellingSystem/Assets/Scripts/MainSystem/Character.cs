@@ -9,14 +9,16 @@ namespace InteractiveStorytellingSystem
     {
         [SerializeField] private string Name; //name of the character
         [SerializeField] private TextAsset PersonalityFile;
-        [SerializeField] private object ActionListFile;
+        [SerializeField] private TextAsset ActionListFile;
+        private EventManager eventManager;
+
         public EmotionalPersonality Personality { get; private set; } //emotional personality of the character
         public List<Action> ActionList { get; private set; }
+        private EventPriorityQueue ReceivingQueue = new EventPriorityQueue();
 
-        public void Start()
+        public void SendEventManagerReference(EventManager eventManagerReference)
         {
-            CreatePersonality();
-            CreateActionList();
+            eventManager = eventManagerReference;
         }
 
         public void CreatePersonality()
@@ -26,7 +28,30 @@ namespace InteractiveStorytellingSystem
 
         public void CreateActionList()
         {
-            //this.ActionList = ConfigReader.ConfigReader.ReadActionList(ActionListPath);
+            this.ActionList = ConfigReader.ConfigReader.ReadActionList(ActionListFile.name + ".xml");
+        }
+
+        public void SendAction(Action action)
+        {
+            ReceivingQueue.Add(1, action); //TODO: implement priority system!
+        }
+
+        private void SendActionToEventManager(Action action)
+        {
+            eventManager.AddAction(action);
+        }
+
+        public void Update()
+        {
+            if(!ReceivingQueue.IsEmpty())
+            {
+                Action receivedAction = ReceivingQueue.Remove();
+                Debug.Log(receivedAction.Name);
+                //analyse action
+                //respond
+                if(receivedAction.Name == "Greeting")
+                    SendActionToEventManager(ActionList[0]);
+            }
         }
     }
 }

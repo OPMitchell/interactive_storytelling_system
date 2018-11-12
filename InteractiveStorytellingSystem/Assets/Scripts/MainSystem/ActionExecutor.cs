@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using UnityEngine;
 
 namespace InteractiveStorytellingSystem
 {
@@ -8,14 +9,14 @@ namespace InteractiveStorytellingSystem
     {
         public static void ExecuteAction(Action action)
         {
-            Console.Write(action.Sender + ": ");
+            Debug.Log(action.Sender + ": ");
             foreach(Dialog d in DialogManager.Dialog)
             {
                 if (d.DialogID == action.DialogID)
                 {
                     string speech = d.Value;
                     speech =  speech.Replace("%t", action.Target);
-                    Console.WriteLine(speech);
+                    Debug.Log(speech);
                 }
 
             }
