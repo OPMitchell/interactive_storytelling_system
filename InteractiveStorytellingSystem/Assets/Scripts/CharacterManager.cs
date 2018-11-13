@@ -5,32 +5,14 @@ using InteractiveStorytellingSystem;
 
 public class CharacterManager : MonoBehaviour
 {
-	[SerializeField] private List<Character> Characters;
-
+	[SerializeField] private List<GameObject> CharacterPrefabs;
 	public void Awake()
 	{
-		float x = 0f;
-		foreach(Character c in Characters)
+		foreach(GameObject c in CharacterPrefabs)
 		{
-			Vector3 position = new Vector3(x, 0f, 0f);
-			c.CreateActionList();
-			c.CreatePersonality();
-			Instantiate(c, position, Quaternion.identity);
-			c.SendEventManagerReference(GetComponent<EventManager>());
-			x = x - c.GetComponent<Renderer>().bounds.size.x;
-			position = new Vector3(x, 0f, 0f);
+			GameObject obj = Instantiate(c, Vector3.zero, Quaternion.identity);
+			obj.name = obj.GetComponent<Character>().Name;
 		}
-	}
-
-	public Character FindCharacterByName(string name)
-	{
-		foreach(Character c in Characters)
-		{
-			if(c.name == name)
-			{
-				return c;
-			}
-		}
-		throw new KeyNotFoundException("Could not find a character with that name!");
+		Debug.Log("CharacterManager has finished instantiating the characters at " + Time.realtimeSinceStartup);
 	}
 }

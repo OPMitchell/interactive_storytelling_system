@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212413591742154760}
   - component: {fileID: 114057835947312054}
   m_Layer: 0
-  m_Name: Pikachu
+  m_Name: 
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,7 +52,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 691dbe716ee083d4998b5f092485cc51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Pikachu
   PersonalityFile: {fileID: 4900000, guid: 7e753f3d96edc5c4b82c6976817e218a, type: 3}
   ActionListFile: {fileID: 4900000, guid: a4cd4652be65eda46b3d15cf997547c3, type: 3}
 --- !u!212 &212413591742154760

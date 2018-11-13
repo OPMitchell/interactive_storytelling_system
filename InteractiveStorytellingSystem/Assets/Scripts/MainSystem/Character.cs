@@ -7,50 +7,45 @@ namespace InteractiveStorytellingSystem
 {
     public class Character : MonoBehaviour
     {
-        [SerializeField] private string Name; //name of the character
+        [SerializeField] public string Name; //name of the character
         [SerializeField] private TextAsset PersonalityFile;
         [SerializeField] private TextAsset ActionListFile;
-        private EventManager eventManager;
 
         public EmotionalPersonality Personality { get; private set; } //emotional personality of the character
         public List<Action> ActionList { get; private set; }
-        private EventPriorityQueue ReceivingQueue = new EventPriorityQueue();
+        private EventPriorityQueue receivingQueue = new EventPriorityQueue();
 
-        public void SendEventManagerReference(EventManager eventManagerReference)
+        public void Awake()
         {
-            eventManager = eventManagerReference;
+            CreatePersonality();
+            CreateActionList();
+            receivingQueue = new EventPriorityQueue();
         }
 
-        public void CreatePersonality()
+        private void CreatePersonality()
         {
             this.Personality = ConfigReader.ConfigReader.ReadEmotionData(PersonalityFile.name + ".xml");
         }
 
-        public void CreateActionList()
+        private void CreateActionList()
         {
             this.ActionList = ConfigReader.ConfigReader.ReadActionList(ActionListFile.name + ".xml");
         }
 
         public void SendAction(Action action)
         {
-            ReceivingQueue.Add(1, action); //TODO: implement priority system!
-        }
-
-        private void SendActionToEventManager(Action action)
-        {
-            eventManager.AddAction(action);
+            receivingQueue.Add(1, action); //TODO: implement priority system!
         }
 
         public void Update()
         {
-            if(!ReceivingQueue.IsEmpty())
+            if(!receivingQueue.IsEmpty())
             {
-                Action receivedAction = ReceivingQueue.Remove();
-                Debug.Log(receivedAction.Name);
+                Action receivedAction = receivingQueue.Remove();
                 //analyse action
                 //respond
                 if(receivedAction.Name == "Greeting")
-                    SendActionToEventManager(ActionList[0]);
+                    GameManager.AddActionToEventManager(ActionList[0]);
             }
         }
     }
