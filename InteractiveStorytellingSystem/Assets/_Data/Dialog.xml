@@ -1,11 +1,14 @@
 <Dialogs>
-	<Dialog dialogid="Greeting">
+	<Dialog dialogid="Hello">
 		<Value>Hey %t! How are you?</Value>
 	</Dialog>
-	<Dialog dialogid="Hug">
-		<Value>*Hugs %t*</Value>
+	<Dialog dialogid="Insult">
+		<Value>Screw you %t!</Value>
 	</Dialog>
-	<Dialog dialogid="Slap">
-		<Value>*Slaps %t*</Value>
+	<Dialog dialogid="Insult_SadResponse">
+		<Value>Aww... that hurt my feelings!</Value>
+	</Dialog>
+	<Dialog dialogid="FollowPlayer">
+		<Value>I'm going to follow Oli now!</Value>
 	</Dialog>
 </Dialogs>

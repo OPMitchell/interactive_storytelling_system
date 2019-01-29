@@ -1,0 +1,4 @@
+<Actions>
+	<Action name="Greeting" sender="Rachel" target="Bob" dialogid="Hello"/>
+	<Action name="WalkToTarget" sender="Rachel" target="Bob" dialogid=""/>
+</Actions>

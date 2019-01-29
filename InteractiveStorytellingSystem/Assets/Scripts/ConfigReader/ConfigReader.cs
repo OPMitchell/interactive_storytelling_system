@@ -37,10 +37,14 @@ namespace InteractiveStorytellingSystem.ConfigReader
             return StandardDeserialization<List<Action>>(actionListXMLPath, "Actions");
         }
 
+        public static List<Response> ReadResponseList(string responseListXMLPath)
+        {
+            return StandardDeserialization<List<Response>>(responseListXMLPath, "Responses");
+        }
+
         public static List<Dialog> ReadDialogList(string dialogListXMLPath)
         {
             return StandardDeserialization<List<Dialog>>(dialogListXMLPath, "Dialogs");
         }
-
     }
 }

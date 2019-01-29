@@ -11,7 +11,7 @@ public class EventManager : MonoBehaviour
 	{
 		Debug.Log("First Event at " + Time.realtimeSinceStartup);
 		//add the first ever game action here to start the game!
-		AddAction(GameManager.FindCharacter("Squirtle").ActionList[0]);
+		AddAction(GameManager.FindCharacter("Rachel").ActionList[1]);
 	}
 
 	public void Update()
@@ -30,7 +30,11 @@ public class EventManager : MonoBehaviour
 	public void RemoveAction()
 	{
 		Action action = eventQueue.Remove(); //Remove action from event queue
-		ActionExecutor.ExecuteAction(action);//Execute the action
-		GameManager.FindCharacter(action.Target).SendAction(action); //Send action to target for memory storage and response
+		ExecuteAction(action);
+	}
+
+	private void ExecuteAction(Action action)
+	{
+		GameObject.Find(action.Sender).GetComponent<ActionExecutor>().ExecuteAction(action);//Execute the action
 	}
 }

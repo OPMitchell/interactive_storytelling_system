@@ -10,15 +10,18 @@ namespace InteractiveStorytellingSystem
         [SerializeField] public string Name; //name of the character
         [SerializeField] private TextAsset PersonalityFile;
         [SerializeField] private TextAsset ActionListFile;
+        [SerializeField] private TextAsset ResponseListFile;
 
         public EmotionalPersonality Personality { get; private set; } //emotional personality of the character
         public List<Action> ActionList { get; private set; }
+        public List<Response> ResponseList {get; private set;}
         private EventPriorityQueue receivingQueue = new EventPriorityQueue();
 
         public void Awake()
         {
             CreatePersonality();
             CreateActionList();
+            CreateResponseList();
             receivingQueue = new EventPriorityQueue();
         }
 
@@ -30,6 +33,11 @@ namespace InteractiveStorytellingSystem
         private void CreateActionList()
         {
             this.ActionList = ConfigReader.ConfigReader.ReadActionList(ActionListFile.name + ".xml");
+        }
+
+        private void CreateResponseList()
+        {
+            this.ResponseList = ConfigReader.ConfigReader.ReadResponseList(ResponseListFile.name + ".xml");
         }
 
         public void SendAction(Action action)
@@ -44,9 +52,19 @@ namespace InteractiveStorytellingSystem
                 Action receivedAction = receivingQueue.Remove();
                 //analyse action
                 //respond
-                if(receivedAction.Name == "Greeting")
-                    GameManager.AddActionToEventManager(ActionList[0]);
+                foreach (Response r in ResponseList)
+                {
+                    if(r.Name == receivedAction.Name && r.Sender == receivedAction.Sender && r.DialogID == receivedAction.DialogID)
+                    {
+                        Action response = r.Action;
+                        if (response.Target == "*")
+                            response.Target = receivedAction.Sender;
+                        GameManager.AddActionToEventManager(response);
+                    }
+                }
             }
         }
+
+
     }
 }

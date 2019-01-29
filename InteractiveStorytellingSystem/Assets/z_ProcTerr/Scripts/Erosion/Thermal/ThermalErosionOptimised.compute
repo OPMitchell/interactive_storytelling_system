@@ -1,0 +1,96 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+RWStructuredBuffer<float> newTerrain;
+RWStructuredBuffer<float> oldTerrain;
+
+float talusThreshold; // Erosion only occurs if steepness is more than this value.
+float c; // Amount of material to move per iteration.
+uint width; // width of the heightmap.
+
+uint currentPos; // current position on the heightmap to be evaluated.
+
+// All 4 neighbours of current position.
+uint nLeftUp;
+uint nLeftDown;
+uint nRightUp;
+uint nRightDown;
+
+float maxVal; // The greatest difference of the current position and its 4 neighbours.
+
+// Check if the specified position is valid, and inside the bounds of the heightmap array. Returns true/false.
+bool IsPosValid(uint pos)
+{
+	if(((currentPos) % width == 0) && ((pos == nLeftUp)||(pos == nLeftDown)))
+		return false;
+	if(((currentPos+1) % width == 0) && ((pos == nRightUp)||(pos == nRightDown)))
+		return false;
+	if(((currentPos >= (width*(width-1))) && (currentPos < (width*width))) && ((pos == nLeftDown)||(pos == nRightDown)))
+		return false;
+	if((currentPos >= 0 && currentPos < width) && ((pos == nLeftUp)||(pos == nRightUp)))
+		return false;
+	return true;
+}
+
+// Finds the 4 neighbour positions of the position currently being evaluated as indexes of the heightmap.
+void FindPositions(uint3 id)
+{
+	int x = id.x;
+	int y = id.y * width;
+	currentPos = x + y;
+
+	nLeftUp = (currentPos -1)-width;
+	nLeftDown = (currentPos -1)+width;
+	nRightUp = (currentPos +1)-width;
+	nRightDown = (currentPos +1)+width;
+}
+
+// Calculates how much material to move from the currently evaluated position, to a specified neighbour.
+void MoveMaterial(float neighbourDifference, int neighbour)
+{
+	if(neighbourDifference > talusThreshold && IsPosValid(neighbour)) // Check if the steepness with the specified neighbour is enough to cause erosion and that the neighbour is inside the heightmap array.
+	{
+		float change = (c * (maxVal - talusThreshold)); // Calculate how much material to transport.
+		newTerrain[currentPos] -= change; // Remove material from the current position.
+		newTerrain[neighbour] += change; // Add material to the neighbouring position.
+	}
+}
+
+// Returns the steepness between the currently evaluated position and a specified neighbour
+float CalculateSteepness(int neighbour)
+{
+	float steepness = 1.0f;
+	if(IsPosValid(neighbour)) // Check that the neighbour is inside the heightmap array.
+		steepness = oldTerrain[currentPos] - oldTerrain[neighbour]; // Calculate steepness.
+	return steepness;
+}
+
+// Main function that performs the erosion process.
+[numthreads(9,27,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	oldTerrain = newTerrain;
+
+	// Find positions as array indexes.
+	FindPositions(id);
+
+	// Calculate the steepness between the currently evaluated position and all 8 neighbours.
+	float nLeftUpDifference = CalculateSteepness(nLeftUp);
+	float nLeftDownDifference = CalculateSteepness(nLeftDown);
+	float nRightUpDifference = CalculateSteepness(nRightUp);
+	float nRightDownDifference = CalculateSteepness(nRightDown);
+
+	// Find the greatest steepness value.
+	maxVal = max(nLeftUpDifference, max(nLeftDownDifference, max(nRightUpDifference, nRightDownDifference)));
+
+	// Transport material from ONLY the neighbour of greatest steepness to simulate erosion
+
+	if(maxVal == nLeftUpDifference)
+		MoveMaterial(nLeftUpDifference, nLeftUp);
+	else if (maxVal = nLeftDownDifference)
+		MoveMaterial(nLeftDownDifference, nLeftDown);
+	else if (maxVal = nRightUpDifference)
+		MoveMaterial(nRightUpDifference, nRightUp);
+	else if (maxVal = nRightDownDifference)
+		MoveMaterial(nRightDownDifference, nRightDown);
+}

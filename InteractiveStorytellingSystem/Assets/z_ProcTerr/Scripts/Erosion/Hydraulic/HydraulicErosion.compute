@@ -1,0 +1,300 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSTransport
+#pragma kernel CSWater
+#pragma kernel CSEvaporation
+
+RWStructuredBuffer<float> heightMap; //current heightmap to erode
+RWStructuredBuffer<float> oldWaterMap; //original watermap to read from
+RWStructuredBuffer<float> waterMap; //new watermap to write to
+RWStructuredBuffer<float> sedimentMap;
+
+RWStructuredBuffer<float> temperatureMap;
+RWStructuredBuffer<float> precipitationMap;
+
+RWStructuredBuffer<float> originalHeightMap; //original uneroded heightmap
+RWStructuredBuffer<float> layerHeights; //heights of each layer
+RWStructuredBuffer<float> layerSolubilities; //solubilities of each layer
+
+float waterStepCoef; //The amount of new rain that falls onto the terrain every iteration. 
+float solubilityConst; //This value describes how susceptible the terrain is to erosion. The larger the value, the more material is dissolved. 
+float sedimentCapacityCoef; //This value describes the amount of material resting water can hold. Any excess sediment is then deposited. 
+float evaporationCoef; //This value describes how much water evaporates every iteration, and therefore how much sediment is deposited. A value of 0 produces no erosion whatsoever. 
+float temperatureWeightCoef; //This value describes how great of an effect the temperature map has on the hydraulic erosion simulation. A value of 0 means there is no effect. 
+float rainWeightCoef; //This value describes how great of an effect the rain map has on the hydraulic erosion simulation. A value of 0 means there is no effect. 
+
+int numberOfLayers; //number of layers in the layered data representation
+int width; //width of the heightmap
+
+int gX; //x ID of the current global thread
+int gY; //y ID od the current global thread
+
+int currentPos = 0; //index of the current position being evaluated in the heightmap
+
+int nLeft = 0; //index of the current position's left neighbour
+int nRight = 0; //index of the current position's right neighbour
+int nUp = 0; //index of the current position's top neighbour
+int nDown = 0; //index of the current position's bottom neighbour
+
+int nLeftUp = 0; //index of the current position's top-left neighbour
+int nLeftDown = 0; //index of the current position's bottom-left neighbour
+int nRightUp = 0; //index of the current position's top-right neighbour
+int nRightDown = 0; //index of the current position's bottom-right neighbour
+
+//Structure holding data on neighbouring cells, including the average height, sum of the difference between cells, and how many cells are included in the calculation.
+struct Data
+{
+	float averageHeight;
+	float sumDifference;
+	int noOfCells;
+};
+
+//Returns the amount of water at the specified index of the current watermap
+float GetWater(int pos)
+{
+	return waterMap[pos];
+}
+
+//Returns the amount of sediment at the specified index of the sedimentmap
+float GetSediment(int pos)
+{
+	return sedimentMap[pos];
+}
+
+//Adds the specified amount of material to the specified index of the heightmap
+void AddHeight(int pos, float amount)
+{
+	heightMap[pos] += amount;
+}
+
+//Adds the specified amount of water to the specified index of the watermap
+void AddWater(int pos, float amount)
+{
+	waterMap[pos] += amount;
+}
+
+//Adds the specified amount of sediment to the specified index of the sedimentmap
+void AddSediment(int pos, float amount)
+{
+	sedimentMap[pos] += amount;
+}
+
+//Finds the 8 neighbour positions of the position currently being evaluated as indexes of the heightmap.
+void FindPositions(uint3 id)
+{
+	int x = id.x;
+	int y = id.y * width;
+	gX = id.x;
+	gY = id.y;
+
+	currentPos = x+y;
+
+	nLeft = currentPos -1;
+	nRight = currentPos +1;
+	nUp = currentPos - width;
+	nDown = currentPos + width;
+	nLeftUp = (currentPos - width) -1;
+	nLeftDown = (currentPos + width) -1;
+	nRightUp = (currentPos - width) +1;
+	nRightDown = (currentPos + width) +1;
+}
+
+// Check if the specified position is valid, and inside the bounds of the heightmap array. Returns true/false.
+bool IsPosValid(int pos)
+{
+	if(((currentPos) % width == 0) && ((pos == nLeft)||(pos == nLeftUp)||(pos == nLeftDown)))
+		return false;
+	if(((currentPos+1) % width == 0) && ((pos == nRight)||(pos == nRightUp)||(pos == nRightDown)))
+		return false;
+	if(((currentPos >= (width*(width-1))) && (currentPos < (width*width))) && ((pos == nLeftDown)||(pos == nDown)||(pos == nRightDown)))
+		return false;
+	if((currentPos >= 0 && currentPos < width) && ((pos == nLeftUp)||(pos == nUp)||(pos == nRightUp)))
+		return false;
+	return true;
+}
+
+//Get the difference between the currently evaluated cell and the specified neighbour. If neighbour is out of bounds, return -1
+float Difference(int neighbourPos)
+{
+	if(!IsPosValid(neighbourPos))
+		return -1.0f;
+	return (heightMap[currentPos] + oldWaterMap[currentPos]) - (heightMap[neighbourPos] + oldWaterMap[neighbourPos]);
+};
+
+//Returns true if the specified value is above 0, else returns false
+bool IsPositive(float val)
+{
+	if(val > 0)
+		return true;
+	return false;
+}
+
+//Updates the neighbour data structure with the specified neighbour.
+Data GetDifference(Data d, int pos)
+{
+	float diff = Difference(pos);
+	if(IsPositive(diff)) //if the difference between the current cell and the specified neighbour is positive (i.e. the neighbour is lower than the current cell)
+	{
+		d.averageHeight += heightMap[pos] + oldWaterMap[pos]; //add the neighbour's total height to the average height
+		d.sumDifference += diff; //add the difference to the sum of all differences
+		d.noOfCells++; //increase the number of cells involved in the calculation
+	}
+	return d;
+}
+
+//Updates the neighbour data structure with all the current cell's neighbours
+Data GetDifferences(Data d)
+{
+	d = GetDifference(d, nUp);
+	d = GetDifference(d, nDown);
+	d = GetDifference(d, nLeft);
+	d = GetDifference(d, nRight);
+	d = GetDifference(d, nLeftUp);
+	d = GetDifference(d, nLeftDown);
+	d = GetDifference(d, nRightUp);
+	d = GetDifference(d, nRightDown);
+	d.averageHeight /= d.noOfCells; //find the average height of a cell involved in the calculation
+	return d;
+}
+
+//Calculate how much water needs to be moved from the current cell to the specified neighbour - cannot be more water than is available in the current cell
+float CalcWaterAmount(Data d, int pos)
+{
+	return min(oldWaterMap[currentPos], ((heightMap[currentPos] + oldWaterMap[currentPos])-d.averageHeight)) * (Difference(pos)/d.sumDifference);
+}
+
+//moves water away from the current cell and into the neighbouring cell
+float MoveWater(Data d, int pos)
+{
+	float waterAmount = 0.0f;
+	float diff = Difference(pos);
+	if(IsPositive(diff))
+	{
+		waterAmount = CalcWaterAmount(d, pos);
+		//AddSediment(pos, waterAmount);
+		AddWater(currentPos, -1*waterAmount);
+	}
+	return waterAmount;
+}
+
+//moves sediment away from the current cell and into the neighbouring cell
+float MoveSediment(int pos, float waterAmount)
+{
+	float sedimentAmount = 0.0f;
+	float diff = Difference(pos);
+	if(IsPositive(diff))
+	{
+		sedimentAmount = GetSediment(currentPos) * (waterAmount/(GetWater(currentPos)-waterAmount));
+		//AddSediment(pos, sedimentAmount);
+		AddSediment(currentPos, -1*sedimentAmount);
+	}
+	return sedimentAmount;
+}
+
+//Moves both water and sediment across the terrain from the specified position
+void CalcWaterAndSedimentMovement(int pos, Data d)
+{
+	MoveSediment(pos, MoveWater(d, pos));
+}
+
+//For every neighbour of the current cell, this method transports water and sediment across the terrain
+void MoveWaterAndSediment(Data d)
+{	
+	CalcWaterAndSedimentMovement(nLeftDown, d);
+	CalcWaterAndSedimentMovement(nUp, d);
+	CalcWaterAndSedimentMovement(nRightUp, d);
+	CalcWaterAndSedimentMovement(nRight, d);
+	CalcWaterAndSedimentMovement(nLeft, d);
+	CalcWaterAndSedimentMovement(nLeftUp, d);
+	CalcWaterAndSedimentMovement(nRightDown, d);
+	CalcWaterAndSedimentMovement(nDown, d);
+}
+
+//Calculates which cells are lower than the current cell and need water/sediment moved into them, then performs transportation
+void Transport()
+{
+	Data d;
+	d.sumDifference = 0.0f;
+	d.averageHeight = heightMap[currentPos] + oldWaterMap[currentPos];
+	d.noOfCells = 1;
+
+	d = GetDifferences(d);
+	MoveWaterAndSediment(d); //move water and sediment for lower neighbours
+}
+
+//Simple linear interpolation function
+float Lerp(float n1, float n2, float time)
+{
+	return n1 + (n2 - n1) * time;
+}
+
+//Adds new water to the terrain based every iteration, based on the rain map
+void WaterStep()
+{
+	//new water amount is a linear interpolation from the new water amount per iteration, and the new water amount per iteration, multiplied by the rain map, at time rainWeightCoef
+	//if rainWeightCoef = 1.0f then the entire rain distribution is governed by the rain map. If it = 0.0f, then the rain will be evenly distributed everywhere as the waterStepCoef
+	float newWaterAmount = Lerp(waterStepCoef, waterStepCoef*precipitationMap[currentPos], rainWeightCoef);
+	AddWater(currentPos, newWaterAmount); //add the new water to the watermap
+}
+
+//Resting water absorbs a portion of the material below it, turning it into dissolved sediment
+void AbsorbStep()
+{
+	float absorptionAmount;
+
+	//layers must be in descending height order
+	for(int i = 0; i < numberOfLayers; i++)
+	{
+		float toplayerstart = (originalHeightMap[currentPos]*layerHeights[i]); //top layer start
+		float bottomlayerstart = 0.0f;
+		if(i < numberOfLayers -1) //if not the last layer
+		  bottomlayerstart = (originalHeightMap[currentPos]*layerHeights[i+1]); //work out where the next layer starts
+		if(heightMap[currentPos] <= toplayerstart && heightMap[currentPos] > bottomlayerstart) //if heightmap is at the defined layer then do absorption
+		{
+			absorptionAmount = (layerSolubilities[i]*solubilityConst)*waterMap[currentPos]; //use the solubility of the layer to define how much material to absorb
+			break;
+		}
+	}
+
+	AddHeight(currentPos, absorptionAmount*-1); //remove material from the heightmap
+	AddSediment(currentPos, absorptionAmount); //add material to the sedimentmap
+}
+
+//Evaporates a portion of resting water, leaving behind some sediment as new material, based on temperature map
+void EvaporationStep()
+{
+	//evaporation amount is a linear interpolation from the evaporation coefficient, and the evporation coefficient multiplied by the temperature map, at time temperatureWeightCoef
+	//if temperatureWeightCoef = 1.0f then the entire evaportion distribution is governed by the heat map. If it = 0.0f, then evaporation be evenly distributed everywhere as the evaporationCoef
+	float evaporation = Lerp(evaporationCoef, evaporationCoef*temperatureMap[currentPos], temperatureWeightCoef);
+	waterMap[currentPos] *= evaporation;
+
+	float maxSediment = sedimentCapacityCoef * waterMap[currentPos]; //calculate how much sediment the water can carry
+	float excess = max(0.0f, sedimentMap[currentPos] - maxSediment); //whatever amount of sediment is over the maxSediment capacity is desposited as new material
+	AddSediment(currentPos, excess*-1); //remove sediment from the sediment map
+	AddHeight(currentPos, excess); //add new material to the heightmap
+}
+
+//run the transport process
+[numthreads(9,27,1)]
+void CSTransport (uint3 id : SV_DispatchThreadID)
+{
+	FindPositions(id);
+	Transport();
+}
+
+//run the new water and absorption processes
+[numthreads(9,27,1)]
+void CSWater (uint3 id : SV_DispatchThreadID)
+{
+	FindPositions(id);
+	WaterStep();
+	AbsorbStep();
+}
+
+//run the evaporation process
+[numthreads(9,27,1)]
+void CSEvaporation (uint3 id : SV_DispatchThreadID)
+{
+	FindPositions(id);
+	EvaporationStep();
+}
+

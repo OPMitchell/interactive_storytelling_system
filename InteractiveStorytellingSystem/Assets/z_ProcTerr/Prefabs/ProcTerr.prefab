@@ -1,0 +1,194 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1034077458735662}
+  m_IsPrefabParent: 1
+--- !u!1 &1034077458735662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4758015557065146}
+  - component: {fileID: 114420864145734390}
+  - component: {fileID: 114882101500696696}
+  - component: {fileID: 114245474439014556}
+  - component: {fileID: 114848489630925014}
+  - component: {fileID: 114436341481311466}
+  - component: {fileID: 114641309487419722}
+  - component: {fileID: 114968306676685900}
+  m_Layer: 0
+  m_Name: ProcTerr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4758015557065146
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114245474439014556
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce19983686e5834b9e958e79ad99df7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Layers:
+  - name: Default
+    solubility: 1
+    maxHeight: 1
+--- !u!114 &114420864145734390
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40305bc6d1947e14cb48d4c52f96eae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114436341481311466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941f6214c028cf54e8e9e9daabc15eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 0
+  materialMovementAmount: 0.0225
+  talusThreshold: 0.00241
+  shader: {fileID: 7200000, guid: 57aaede33e7750244994b0eee2b807ce, type: 3}
+--- !u!114 &114641309487419722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001573d04a4a7c440917846cb08cdf31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 0
+  materialMovementAmount: 0.0005
+  shader: {fileID: 7200000, guid: f28645c8cfa5fbe4882f697e9832e6d8, type: 3}
+--- !u!114 &114848489630925014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9528b9a76ff73804ba1885f58907d974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textureMethod: 1
+  Textures:
+  - Texture: {fileID: 2800000, guid: 44846dbf6a5a85542aca70e07078849a, type: 3}
+    MaxHeightAsAPercentage: 1
+    MinHeightAsAPercentage: 0
+    MinSteepness: 0
+    MaxSteepness: 35
+    MinRainfall: 0
+    MaxRainfall: 1
+    MinTemperature: 0
+    MaxTemperature: 1
+  - Texture: {fileID: 2800000, guid: 3839c9279f8c7b64195acbc6f8320511, type: 3}
+    MaxHeightAsAPercentage: 1
+    MinHeightAsAPercentage: 0
+    MinSteepness: 35
+    MaxSteepness: 90
+    MinRainfall: 0
+    MaxRainfall: 1
+    MinTemperature: 0
+    MaxTemperature: 1
+--- !u!114 &114882101500696696
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3feebfe7b2c93c04291e15456468a6be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainGenerationMethod: 3
+  terrainHeight: 150
+  terrainRoughness: 0.3
+  terrainSeed: 2020
+  heatMapSeed: 200
+  rainMapSeed: 400
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1.1776286
+      outSlope: 1.1776286
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.612548
+      value: 0.72135407
+      inSlope: 0.948402
+      outSlope: 0.948402
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0.71917534
+      outSlope: 0.71917534
+      tangentMode: 34
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!114 &114968306676685900
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1034077458735662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a796734aea4ac124e944a7b89e54c5fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 0
+  shader: {fileID: 7200000, guid: dcdff81e9bb888148a6757b4690a0d14, type: 3}
+  newWaterPerIteration: 0.01
+  solubilityCoefficient: 0.05
+  evaporationCoefficient: 0.5
+  sedimentCapacityCoefficient: 0.05
+  temperatureWeightCoefficient: 0.5
+  rainWeightCoefficient: 0.2
