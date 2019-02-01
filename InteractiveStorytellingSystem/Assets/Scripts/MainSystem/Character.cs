@@ -11,10 +11,12 @@ namespace InteractiveStorytellingSystem
         [SerializeField] private TextAsset PersonalityFile;
         [SerializeField] private TextAsset ActionListFile;
         [SerializeField] private TextAsset ResponseListFile;
+        [SerializeField] private TextAsset PhysicalResponseListFile;
 
         public EmotionalPersonality Personality { get; private set; } //emotional personality of the character
         public List<Action> ActionList { get; private set; }
         public List<Response> ResponseList {get; private set;}
+        public List<PhysicalResponse> PhysicalResponseList {get; private set;}
         private EventPriorityQueue receivingQueue = new EventPriorityQueue();
 
         public void Awake()
@@ -38,6 +40,11 @@ namespace InteractiveStorytellingSystem
         private void CreateResponseList()
         {
             this.ResponseList = ConfigReader.ConfigReader.ReadResponseList(ResponseListFile.name + ".xml");
+        }
+
+        private void CreatePhysicalResponseList()
+        {
+            this.PhysicalResponseList = ConfigReader.ConfigReader.ReadPhysicalResponseList(PhysicalResponseListFile.name + ".xml");
         }
 
         public void SendAction(Action action)

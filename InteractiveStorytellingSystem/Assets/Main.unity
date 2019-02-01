@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45074868, g: 0.5006895, b: 0.57481205, a: 1}
+  m_IndirectSpecularColor: {r: 0.4507481, g: 0.50068885, b: 0.57481104, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -604,8 +604,8 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.8
-  m_Radius: 0.5
+  m_Height: 1.73
+  m_Radius: 0.252
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -635,9 +635,56 @@ Transform:
   m_Children:
   - {fileID: 589390637}
   - {fileID: 237061246}
+  - {fileID: 1171332741}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &215231335
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 191912035}
+    m_Modifications:
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.831
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.327
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: accfca7b71267b644931f5783a39b563, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 448168dbf161f7a49b74fb59fce92e2d, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: accfca7b71267b644931f5783a39b563, type: 3}
+  m_IsPrefabAsset: 0
 --- !u!1 &235127330
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +736,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 237061245}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.34, z: 0}
+  m_LocalPosition: {x: 0, y: 0.757, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 191912035}
@@ -1090,6 +1137,7 @@ GameObject:
   - component: {fileID: 544679907}
   - component: {fileID: 544679906}
   - component: {fileID: 544679908}
+  - component: {fileID: 544679909}
   m_Layer: 0
   m_Name: Rachel
   m_TagString: Untagged
@@ -1193,6 +1241,8 @@ MonoBehaviour:
   PersonalityFile: {fileID: 4900000, guid: e6b58a07d345cd44f9ffa9fea6418f53, type: 3}
   ActionListFile: {fileID: 4900000, guid: 1012758e8014139479fa9aa1d2489e58, type: 3}
   ResponseListFile: {fileID: 4900000, guid: f57d2f760a7a46e4f83bb88cec52a2fb, type: 3}
+  PhysicalResponseListFile: {fileID: 4900000, guid: ca50a2b9fb8fe2f46a5617acd977df94,
+    type: 3}
 --- !u!114 &544679907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1216,6 +1266,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb56e52f659dd74fa11dd1bc7904ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &544679909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 544679900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad0eba4ab1c8f74e9670bc9b0fbf00e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hungerDecay: 0.5
+  tirednessDecay: 0.5
 --- !u!1 &566243525
 GameObject:
   m_ObjectHideFlags: 0
@@ -6330,6 +6393,11 @@ Transform:
   m_Father: {fileID: 1569799096}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1171332741 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400006, guid: accfca7b71267b644931f5783a39b563,
+    type: 3}
+  m_PrefabInternal: {fileID: 215231335}
 --- !u!1 &1171998670
 GameObject:
   m_ObjectHideFlags: 0
@@ -7408,6 +7476,8 @@ MonoBehaviour:
   PersonalityFile: {fileID: 4900000, guid: 7e753f3d96edc5c4b82c6976817e218a, type: 3}
   ActionListFile: {fileID: 4900000, guid: a4cd4652be65eda46b3d15cf997547c3, type: 3}
   ResponseListFile: {fileID: 4900000, guid: 9e8704f9b12a78745af3676ee5f8b338, type: 3}
+  PhysicalResponseListFile: {fileID: 4900000, guid: 88024b9c19461344a84a92c538dca47c,
+    type: 3}
 --- !u!114 &1771348411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7419,6 +7489,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb56e52f659dd74fa11dd1bc7904ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1771348412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1771348403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad0eba4ab1c8f74e9670bc9b0fbf00e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hungerDecay: 0.5
+  tirednessDecay: 0.5
 --- !u!1 &1804576230
 GameObject:
   m_ObjectHideFlags: 0

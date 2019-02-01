@@ -42,6 +42,11 @@ namespace InteractiveStorytellingSystem.ConfigReader
             return StandardDeserialization<List<Response>>(responseListXMLPath, "Responses");
         }
 
+        public static List<PhysicalResponse> ReadPhysicalResponseList(string physicalResponseListXMLPath)
+        {
+            return StandardDeserialization<List<PhysicalResponse>>(physicalResponseListXMLPath, "PhysicalResponses");
+        }
+
         public static List<Dialog> ReadDialogList(string dialogListXMLPath)
         {
             return StandardDeserialization<List<Dialog>>(dialogListXMLPath, "Dialogs");
