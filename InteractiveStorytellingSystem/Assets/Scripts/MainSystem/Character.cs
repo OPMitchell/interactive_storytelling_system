@@ -19,6 +19,26 @@ namespace InteractiveStorytellingSystem
         public List<PhysicalResponse> PhysicalResponseList {get; private set;}
         private EventPriorityQueue receivingQueue = new EventPriorityQueue();
 
+        private MemoryPool mp = new MemoryPool();
+
+        void Start()
+        {
+            mp.AddMemoryPattern(new MemoryPattern(1, new string[]{"Vacation", "Beach", "Dad"}, MemoryType.social, 1.0f));
+            mp.AddMemoryPattern(new MemoryPattern(1, new string[]{"Walk", "Forest", "Dad"}, MemoryType.social, 1.0f));
+            mp.AddMemoryPattern(new MemoryPattern(1, new string[]{"Vacation", "Beach", "Mum"}, MemoryType.social, 1.0f));
+
+            List<Node> nodes = mp.GetNodes();
+            List<Connection> connections = mp.GetConnections();
+            foreach(Node n in nodes)
+            {
+                print("Node: " + n.Keyword + ", Activation = " + n.Activation);
+            }
+            foreach(Connection c in connections)
+            {
+                print("Connection: nodeA = " + c.A.Keyword + ", nodeB = " + c.B.Keyword + ", strength = " + c.Strength);
+            }
+        }
+
         public void Awake()
         {
             CreatePersonality();
@@ -54,6 +74,7 @@ namespace InteractiveStorytellingSystem
 
         public void Update()
         {
+            //Respond to incoming actions from other characters
             if(!receivingQueue.IsEmpty())
             {
                 Action receivedAction = receivingQueue.Remove();
