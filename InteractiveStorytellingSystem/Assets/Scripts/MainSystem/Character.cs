@@ -24,18 +24,16 @@ namespace InteractiveStorytellingSystem
         void Start()
         {
             mp.AddMemoryPattern(new MemoryPattern(1, new string[]{"Vacation", "Beach", "Dad"}, MemoryType.social, 1.0f));
-            mp.AddMemoryPattern(new MemoryPattern(1, new string[]{"Walk", "Forest", "Dad"}, MemoryType.social, 1.0f));
             mp.AddMemoryPattern(new MemoryPattern(1, new string[]{"Vacation", "Beach", "Mum"}, MemoryType.social, 1.0f));
 
             List<Node> nodes = mp.GetNodes();
-            List<Connection> connections = mp.GetConnections();
             foreach(Node n in nodes)
             {
                 print("Node: " + n.Keyword + ", Activation = " + n.Activation);
-            }
-            foreach(Connection c in connections)
-            {
-                print("Connection: nodeA = " + c.A.Keyword + ", nodeB = " + c.B.Keyword + ", strength = " + c.Strength);
+                foreach(Connection c in n.Connections)
+                {
+                    print("     Connection: " + c.partner.Keyword + ", Strength = " + c.Strength);
+                }
             }
         }
 

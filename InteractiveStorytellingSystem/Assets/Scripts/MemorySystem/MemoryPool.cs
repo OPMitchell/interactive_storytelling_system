@@ -42,10 +42,10 @@ public class MemoryPool
                 Node b = GetNodeByKeyword(k);
                 if(b != null)
                 {
-                    Connection newConnection = new Connection(a, b);
-                    Connection c = SearchForConnection(newConnection);
+                    Connection newConnection = new Connection(b);
+                    Connection c = SearchForConnection(a, newConnection);
                     if(c == null)
-                        connections.Add(newConnection); 
+                        a.Connections.Add(newConnection); 
                     else
                         c.IncreaseStrength();  
                 }
@@ -65,25 +65,20 @@ public class MemoryPool
         return null;
     }
 
-    private Connection SearchForConnection(Connection newConnection)
+    private Connection SearchForConnection(Node n, Connection newConnection)
     {
-        foreach (Connection c in connections)
+        foreach (Connection c in n.Connections)
         {
-            if(c.A.Keyword == newConnection.A.Keyword && c.B.Keyword == newConnection.B.Keyword)
+            if(c.partner == newConnection.partner)
             {
                 return c;
             }
-        }
+         }
         return null;
     }
 
     public List<Node> GetNodes()
     {
         return nodes;
-    }
-
-    public List<Connection> GetConnections()
-    {
-        return connections;
     }
 }
