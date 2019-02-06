@@ -1,8 +1,8 @@
 <Responses>
 	<Response name="WalkToTarget" sender="Rachel" dialogid = "">
-		<Action name="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" effect=""/>
+		<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" effect=""/>
 	</Response>
 	<Response name="TalkToTarget" sender="Rachel" dialogid = "Insult">
-		<Action name="TalkToTarget" sender="Bob" target="Rachel" dialogid="Insult_SadResponse" effect=""/>
+		<Action name="SadResponse" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Insult_SadResponse" precondition="" effect=""/>
 	</Response>
 </Responses>

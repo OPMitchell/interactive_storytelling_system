@@ -27,15 +27,23 @@ namespace InteractiveStorytellingSystem
             GameObject target = GameObject.Find(currentAction.Target);
             if(target != null)
             {             
-                if(action.Name == "WalkToTarget")
+                if(action.Type == "WalkToTarget")
                 {
                     sender.GetComponent<MovementManager>().WalkToTarget(target.transform);
                 }
-                else if(action.Name == "FollowTarget")
+                else if(action.Type == "FollowTarget")
                 {
                     sender.GetComponent<MovementManager>().FollowTarget(target.transform);
                 }
-                else if(action.Name == "TalkToTarget")
+                else if(action.Type == "IncreaseStat")
+                {
+                    //FindStat
+                }
+                else if(action.Type == "DecreaseStat")
+                {
+                    //FindStat
+                }
+                else if(action.Type == "TalkToTarget")
                 {
                     TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();
                     foreach(Dialog d in DialogManager.Dialog)

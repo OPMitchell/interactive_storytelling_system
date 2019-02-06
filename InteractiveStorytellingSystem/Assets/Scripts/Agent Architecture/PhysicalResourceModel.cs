@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BodyManager : MonoBehaviour 
+public class PhysicalResourceModel : MonoBehaviour 
 {
 	private bool alive {get;set;}
 	public float Hunger {get;set;}
@@ -14,7 +14,7 @@ public class BodyManager : MonoBehaviour
 	void Start () 
 	{
 		alive = true;
-		Hunger = 0.0f;
+		Hunger = 0.5f;
 		Tiredness = 0.0f;
 		StartCoroutine(UpdatePhysicalAttributes());
 	}
@@ -23,8 +23,14 @@ public class BodyManager : MonoBehaviour
 	{
 		while(alive)
 		{
-			Hunger += hungerDecay;
-			Tiredness += tirednessDecay;
+			if(Hunger + hungerDecay > 1.0f)
+				Hunger = 1.0f;
+			else
+				Hunger += hungerDecay;
+			if(Tiredness + tirednessDecay > 1.0f)
+				Tiredness = 1.0f;
+			else
+				Tiredness += tirednessDecay;
 			yield return new WaitForSeconds(5.0f);
 		}
 	}

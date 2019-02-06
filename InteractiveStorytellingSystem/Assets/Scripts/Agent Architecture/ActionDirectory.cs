@@ -32,11 +32,11 @@ public class ActionDirectory : MonoBehaviour
 	public List<Action> GetActionsByEffect(string effect)
 	{
 		string[] split = GameManager.SplitEffectString(effect);
-		if(split[1] == "<")
+		if(split[1] == "lt")
 		{
 			return GetActionByParameterAndOperation(split[0], "-");
 		}
-		else if(split[1] == ">")
+		else if(split[1] == "gt")
 		{
 			return GetActionByParameterAndOperation(split[0], "+");
 		}

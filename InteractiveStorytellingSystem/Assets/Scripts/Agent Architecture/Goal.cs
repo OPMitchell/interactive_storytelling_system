@@ -16,7 +16,6 @@ namespace InteractiveStorytellingSystem
         public GoalType Type { get; private set; }
         public string Parameters {get; private set;}
         public bool Complete {get; set;}
-        public bool HasPlan {get; set;}
 
         public Stack<Action> Plan {get; private set;}
 
@@ -25,8 +24,11 @@ namespace InteractiveStorytellingSystem
             Type = type;
             Parameters = parameters;
             Complete = false;
-            HasPlan = false;
-            Plan = new Stack<Action>();
+        }
+
+        public void SetPlan(Stack<Action> p)
+        {
+            Plan = p;
         }
     }
 }

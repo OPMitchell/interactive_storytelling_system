@@ -10,7 +10,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 	void Start()
 	{
 		Goals = new List<Goal>();
-		AddGoal(new Goal(GoalType.Interest, "hunger > 0.5"));
+		AddGoal(new Goal(GoalType.Interest, "hunger lt 0.5"));
 	}
 
 	public void AddGoal(Goal g)
@@ -18,41 +18,86 @@ public class ContinuousActionPlanner : MonoBehaviour
 		Goals.Add(g);
 	}
 
-	private void CreatePlan(Goal g)
+	private List<Stack<Action>> CreatePlans(Goal g)
+	{
+		List<Stack<Action>> plans = new List<Stack<Action>>();
+		if(!GameManager.IsParameterTrue(transform.name, g.Parameters))
+		{
+			List<Action> actions = GetComponent<ActionDirectory>()
+				.GetActionsByEffect(g.Parameters);
+			foreach(Action action in actions)
+			{
+				Stack<Action> plan = new Stack<Action>();
+				plan.Push(action);
+				if(!action.HasPrecondition())
+				{
+					plans.Add(plan);
+				}
+				else
+				{
+					AddToPlan(plan, plans, action.Precondition);
+				}
+			}
+		}
+		return plans;
+	}
+
+	private void AddToPlan(Stack<Action> plan, List<Stack<Action>> plans, string parameters)
 	{
 		List<Action> actions = GetComponent<ActionDirectory>()
-			.GetActionsByEffect(g.Parameters);
-		if(actions.Count > 0)
+			.GetActionsByEffect(parameters);
+		foreach(Action action in actions)
 		{
-			g.Plan.Push(actions[0]);
-			Debug.Log(transform.name + " has developed a plan for a goal:" +
-			"\n		Goal: " + g.Parameters +
-			"\n		Plan:" +
-			"\n			Action: " + actions[0].Name + ", Effect = " + actions[0].Effect
-			);
-			g.HasPlan = true;
+			Stack<Action> newPlan = new Stack<Action>();
+			foreach(Action a in plan)
+			{
+				newPlan.Push(a);
+			}
+			newPlan.Push(action);
+			if(!action.HasPrecondition() || GameManager.IsParameterTrue(transform.name, parameters))
+			{
+				plans.Add(newPlan);
+			}
+			else
+			{
+				AddToPlan(newPlan, plans, action.Precondition);
+			}
 		}
 	}
 
 	void Update()
 	{
-		if(Goals.Count > 0)
+		List<Goal> toRemove = new List<Goal>();
+		foreach(Goal g in Goals)
 		{
-			foreach(Goal g in Goals)
+			if(g.Complete)
+				toRemove.Add(g);
+			else
 			{
-				if(g.Complete)
-					Goals.Remove(g);
-				else
+				if(g.Plan == null)
 				{
-					if(!g.HasPlan)
-						CreatePlan(g);
+					List<Stack<Action>> plans = CreatePlans(g);
+					if(plans.Count < 1)
+					{
+						g.Complete = true;
+						Debug.Log(transform.name + " cancelled Goal: " + g.Parameters + " because a plan is impossible to make or goal is already satisfied.");
+					}
 					else
 					{
-						while(g.Plan.Count > 0)
-							GetComponent<ActionQueue>().QueueAction(g.Plan.Pop());
+						//pick a plan from List<Stack<Action>> plans and assign to g.plan
+						g.SetPlan(plans[1]);
 					}
 				}
+				else
+				{
+					while(g.Plan.Count > 0)
+						GetComponent<ActionQueue>().QueueAction(g.Plan.Pop());
+				}
 			}
+		}
+		foreach(Goal g in toRemove)
+		{
+			Goals.Remove(g);
 		}
 	}
 
