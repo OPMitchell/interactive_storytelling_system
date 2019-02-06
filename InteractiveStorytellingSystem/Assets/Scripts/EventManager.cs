@@ -7,12 +7,16 @@ public class EventManager : MonoBehaviour
 {
 	private EventPriorityQueue eventQueue = new EventPriorityQueue();
 
+/*
 	public void Start()
 	{
 		Debug.Log("First Event at " + Time.realtimeSinceStartup);
 		//add the first ever game action here to start the game!
-		AddAction(GameManager.FindCharacter("Rachel").ActionList[1]);
+		AddAction(GameManager.FindCharacter("Rachel")
+			.GetComponent<ContinuousActionPlanner>()
+			.ActionList[1]);
 	}
+	*/
 
 	public void Update()
 	{

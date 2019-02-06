@@ -1,9 +1,8 @@
 <Responses>
 	<Response name="TalkToTarget" sender="Bob" dialogid="Hello">
-		<Action name="TalkToTarget" sender="Rachel" target="Bob" dialogid="Insult"/>
+		<Action name="TalkToTarget" sender="Rachel" target="Bob" dialogid="Insult" effect=""/>
 	</Response>
 	<Response name="TalkToTarget" sender="Bob" dialogid="Insult_SadResponse">
-		<!--<Action name="TalkToTarget" sender="Rachel" target="Bob" dialogid="FollowPlayer"/>-->
-    	<Action name="FollowTarget" sender="Rachel" target="Player" dialogid=""/>
+    	<Action name="FollowTarget" sender="Rachel" target="Player" dialogid="" effect=""/>
 	</Response>
 </Responses>

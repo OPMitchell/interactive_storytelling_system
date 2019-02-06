@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace InteractiveStorytellingSystem.ConfigReader
 {
-    static class ConfigReader
+    public static class ConfigReader
     {
         private static string applicationPath = Application.dataPath.ToString();
 
@@ -40,11 +40,6 @@ namespace InteractiveStorytellingSystem.ConfigReader
         public static List<Response> ReadResponseList(string responseListXMLPath)
         {
             return StandardDeserialization<List<Response>>(responseListXMLPath, "Responses");
-        }
-
-        public static List<PhysicalResponse> ReadPhysicalResponseList(string physicalResponseListXMLPath)
-        {
-            return StandardDeserialization<List<PhysicalResponse>>(physicalResponseListXMLPath, "PhysicalResponses");
         }
 
         public static List<Dialog> ReadDialogList(string dialogListXMLPath)

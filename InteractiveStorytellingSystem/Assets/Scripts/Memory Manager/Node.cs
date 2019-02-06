@@ -10,7 +10,7 @@ public class Node
     public Node(string keyword)
     {
         Keyword = keyword;
-        Activation = 0.0f;
+        Activation = 1.0f;
         Connections = new List<Connection>();
     }
 }

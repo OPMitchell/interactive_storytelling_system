@@ -15,5 +15,7 @@ namespace InteractiveStorytellingSystem
         public string PrerequisiteAction { get; set; }
         [XmlAttribute("dialogid")]
         public string DialogID { get; set; }
+        [XmlAttribute("effect")]
+        public string Effect { get; set; }
     }
 }

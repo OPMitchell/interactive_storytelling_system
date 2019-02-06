@@ -1,5 +1,0 @@
-<PhysicalResponses>
-	<PhysicalResponse parameters="hunger>50.0">
-		<Action name="WalkToTarget" sender="Bob" target="Food" dialogid=""/>
-	</PhysicalResponse>
-</PhysicalResponses>

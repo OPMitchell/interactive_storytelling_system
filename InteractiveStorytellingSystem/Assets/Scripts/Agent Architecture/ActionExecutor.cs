@@ -8,36 +8,35 @@ namespace InteractiveStorytellingSystem
 {
     public class ActionExecutor : MonoBehaviour
     {
-        private bool executing;
+        public bool Executing {get; private set;}
         private Action currentAction;
 
         void Start()
         {
-            executing = false;
+            Executing = false;
             currentAction = null;
         }
 
-        public void ExecuteAction(Action action)
+        public bool ExecuteAction(Action action)
         {
+            if(action.Target == "%s")
+                action.Target = transform.name;
             currentAction = action;
-            executing = true;
+            Executing = true;
             GameObject sender = GameObject.Find(currentAction.Sender);
             GameObject target = GameObject.Find(currentAction.Target);
             if(target != null)
             {             
                 if(action.Name == "WalkToTarget")
                 {
-                    Debug.Log(currentAction.Sender + " executing action: " + currentAction.Name + " on target: " + currentAction.Target);
                     sender.GetComponent<MovementManager>().WalkToTarget(target.transform);
                 }
                 else if(action.Name == "FollowTarget")
                 {
-                    Debug.Log(currentAction.Sender + " executing action: " + currentAction.Name + " on target: " + currentAction.Target);
                     sender.GetComponent<MovementManager>().FollowTarget(target.transform);
                 }
                 else if(action.Name == "TalkToTarget")
                 {
-                    Debug.Log(currentAction.Sender + " executing action: " + currentAction.Name + " on target: " + currentAction.Target);
                     TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();
                     foreach(Dialog d in DialogManager.Dialog)
                     {
@@ -54,12 +53,15 @@ namespace InteractiveStorytellingSystem
                 else
                 {
                     CancelAction();
+                    return false;
                 }
             }
             else
             {
                 CancelAction();
+                return false;
             }
+            return true;
         }
 
         IEnumerator Speak(TextMesh t, string dialog)
@@ -72,10 +74,8 @@ namespace InteractiveStorytellingSystem
 
         void Update()
         {
-            if(!executing && currentAction != null)
+            if(!Executing && currentAction != null)
             {
-                if(currentAction.Target != "Player")
-			        GameManager.FindCharacter(currentAction.Target).SendAction(currentAction); //Send action to target for memory storage and response
                 currentAction = null;
             }
         }
@@ -89,7 +89,7 @@ namespace InteractiveStorytellingSystem
 
         public void StopExecuting()
         {
-            executing = false;
+            Executing = false;
         }
 
 
