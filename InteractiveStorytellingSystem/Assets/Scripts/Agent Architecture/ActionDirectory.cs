@@ -10,7 +10,7 @@ public class ActionDirectory : MonoBehaviour
 	[SerializeField] private TextAsset ActionListFile;
 	public List<Action> ActionList {get; private set;}
 
-	void Start()
+	void Awake()
 	{
 		CreateActionList();
 	}
