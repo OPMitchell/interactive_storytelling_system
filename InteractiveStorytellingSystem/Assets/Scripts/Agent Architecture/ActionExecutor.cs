@@ -37,11 +37,11 @@ namespace InteractiveStorytellingSystem
                 }
                 else if(action.Type == "IncreaseStat")
                 {
-                    //FindStat
+                    Executing = false;
                 }
                 else if(action.Type == "DecreaseStat")
                 {
-                    //FindStat
+                    Executing = false;
                 }
                 else if(action.Type == "TalkToTarget")
                 {

@@ -14,16 +14,18 @@ public class ActionQueue : MonoBehaviour
 	private EventPriorityQueue receivingQueue = new EventPriorityQueue();
     private EventPriorityQueue actionQueue = new EventPriorityQueue();
 
+    private bool executing;
+
 	void Start()
 	{
         CreatePersonality();
         CreateResponseList();
 	    receivingQueue = new EventPriorityQueue();
         actionQueue = new EventPriorityQueue();
+        executing = false;
         if(transform.name == "Rachel")
             QueueAction(GetComponent<ActionDirectory>()
             .GetActionByIndex(1));
-        StartCoroutine(MonitorReceivingQueue());
 	}
 
     public void QueueAction(Action action)
@@ -43,39 +45,41 @@ public class ActionQueue : MonoBehaviour
 			.QueueReceivedAction(action);
 	}
 
- 	//put this code in CAP instead
-    public void Update()
+    void Update()
     {
-        if(!actionQueue.IsEmpty())
+        CheckReceivingQueue();
+        CheckActionQueue();
+    }
+
+    private void CheckActionQueue()
+    {
+        if(!actionQueue.IsEmpty() && !executing)
         {
             Action action = actionQueue.Remove();
+            executing = true;
             StartCoroutine(Execute(action));
         }
     }
 
-    private IEnumerator MonitorReceivingQueue()
+    private void CheckReceivingQueue()
     {
-        while(true)
+        //Respond to incoming actions from other characters
+        if(!receivingQueue.IsEmpty())
         {
-            //Respond to incoming actions from other characters
-            if(!receivingQueue.IsEmpty())
+            Action receivedAction = receivingQueue.Remove();
+            Debug.Log(receivedAction.Target + " received action: " + receivedAction.Name + " from sender: " + receivedAction.Sender);
+            //analyse action
+            //respond
+            foreach (Response r in ResponseList)
             {
-                Action receivedAction = receivingQueue.Remove();
-                Debug.Log(receivedAction.Target + " received action: " + receivedAction.Name + " from sender: " + receivedAction.Sender);
-                //analyse action
-                //respond
-                foreach (Response r in ResponseList)
+                if(r.Name == receivedAction.Name && r.Sender == receivedAction.Sender && r.DialogID == receivedAction.DialogID)
                 {
-                    if(r.Name == receivedAction.Name && r.Sender == receivedAction.Sender && r.DialogID == receivedAction.DialogID)
-                    {
-                        Action response = r.Action;
-                        if (response.Target == "*")
-                            response.Target = receivedAction.Sender;
-                        QueueAction(response);              
-                    }
+                    Action response = r.Action;
+                    if (response.Target == "*")
+                        response.Target = receivedAction.Sender;
+                    QueueAction(response);              
                 }
             }
-            yield return new WaitForSeconds(.5f);
         }
     }
 
@@ -90,6 +94,7 @@ public class ActionQueue : MonoBehaviour
             if(action.Target != "Player")
             {
                 Debug.Log(actionInfo + " is complete! Sending confirmation to target for appraisal!");
+                executing = false;
                 SendActionToCharacter(action);
             }
         }

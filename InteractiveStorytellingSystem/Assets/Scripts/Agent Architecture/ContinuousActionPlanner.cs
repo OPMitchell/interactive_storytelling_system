@@ -21,24 +21,8 @@ public class ContinuousActionPlanner : MonoBehaviour
 	private List<Stack<Action>> CreatePlans(Goal g)
 	{
 		List<Stack<Action>> plans = new List<Stack<Action>>();
-		if(!GameManager.IsParameterTrue(transform.name, g.Parameters))
-		{
-			List<Action> actions = GetComponent<ActionDirectory>()
-				.GetActionsByEffect(g.Parameters);
-			foreach(Action action in actions)
-			{
-				Stack<Action> plan = new Stack<Action>();
-				plan.Push(action);
-				if(!action.HasPrecondition())
-				{
-					plans.Add(plan);
-				}
-				else
-				{
-					AddToPlan(plan, plans, action.Precondition);
-				}
-			}
-		}
+		Stack<Action> plan = new Stack<Action>();
+		AddToPlan(plan, plans, g.Parameters);
 		return plans;
 	}
 
@@ -79,8 +63,11 @@ public class ContinuousActionPlanner : MonoBehaviour
 					List<Stack<Action>> plans = CreatePlans(g);
 					if(plans.Count < 1)
 					{
-						g.Complete = true;
-						Debug.Log(transform.name + " cancelled Goal: " + g.Parameters + " because a plan is impossible to make or goal is already satisfied.");
+						if(g.Type == GoalType.Pursuit)
+						{
+							g.Complete = true;
+							Debug.Log(transform.name + " cancelled Goal: " + g.Parameters + " because a plan is impossible to make or goal is already satisfied.");
+						}
 					}
 					else
 					{
