@@ -11,6 +11,7 @@ public class ActionQueue : MonoBehaviour
 
     public EmotionalPersonality Personality { get; private set; } //emotional personality of the character
     public List<Response> ResponseList {get; private set;}
+
 	private EventPriorityQueue receivingQueue = new EventPriorityQueue();
     private EventPriorityQueue actionQueue = new EventPriorityQueue();
 
@@ -23,6 +24,7 @@ public class ActionQueue : MonoBehaviour
 	    receivingQueue = new EventPriorityQueue();
         actionQueue = new EventPriorityQueue();
         executing = false;
+        //[TESTING] 
         if(transform.name == "Rachel")
             QueueAction(GetComponent<ActionDirectory>()
             .GetActionByIndex(1));
@@ -87,17 +89,13 @@ public class ActionQueue : MonoBehaviour
     {
         string actionInfo = GameManager.GetActionInfo(action);
         Debug.Log(actionInfo + " has been started");
-        if(GetComponent<ActionExecutor>().ExecuteAction(action))
+        StartCoroutine(GetComponent<ActionExecutor>().ExecuteAction(action));
+        yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
+        if(action.status == Status.Successful && action.Target != "Player")
         {
-            Debug.Log(transform.name + " is waiting until " + actionInfo + " is complete...");
-            yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
-            if(action.Target != "Player")
-            {
-                Debug.Log(actionInfo + " is complete! Sending confirmation to target for appraisal!");
-                executing = false;
-                SendActionToCharacter(action);
-            }
+            SendActionToCharacter(action);
         }
+        executing = false;
     }
     
 	private void CreatePersonality()

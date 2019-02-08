@@ -60,6 +60,9 @@ public static class GameManager
 					.GetComponent<PhysicalResourceModel>()
 					.Hunger;
 				break;
+			case "anger":
+				result = 0.6f;
+				break;
 		}
 		return result;
 	}

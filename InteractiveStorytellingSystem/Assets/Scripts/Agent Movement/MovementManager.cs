@@ -5,126 +5,71 @@ using InteractiveStorytellingSystem;
 
 public class MovementManager : MonoBehaviour
 {
-	enum movementActions
+	public enum MovementType
 	{
-		Idle,
-		Follow,
-		WalkToTarget,
-		TurnToTarget
-	};
+		Idle = 1,
+		Walking = 2,
+		Turning = 3
+	}
 
-    public float speed;
+    [SerializeField] private float speed;
 	private Animator animator;
     private GameObject player;
-    private bool isWalking;
-	private movementActions currentAction;
+	public MovementType movementType { get; private set; }
 	private Transform target;
-	private bool atTarget;
+
 
 	// Use this for initialization
 	void Start () 
 	{
 		animator = GetComponent<Animator>();
         player = GameObject.Find("FPSController");
-        isWalking = false;
-		atTarget = false;
-		currentAction = movementActions.Idle;
+		movementType = MovementType.Idle;
+		target = null;
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+	void Update()
 	{
-		switch(currentAction)
+		switch(movementType)
 		{
-			case movementActions.Follow:
-				Movement_Follow();
-			break;
-			case movementActions.WalkToTarget:
-				Movement_WalkToTarget();
-			break;
-			case movementActions.TurnToTarget:
-				Movement_TurnToTarget();
-			break;
+			case MovementType.Idle:
+				break;
+			case MovementType.Walking:
+				Movement_WalkToTarget(target);
+				break;
+			case MovementType.Turning:
+				Movement_TurnToTarget(target);
+				break;
 		}
 	}
 
-	public void FollowTarget(Transform t)
-	{
-		target = t;
-		SetCurrentAction(movementActions.Follow);
-	}
-	void Movement_Follow()
+	public void Movement_WalkToTarget(Transform target)
 	{
 		if(target != null)
 		{
 			if(Vector3.Distance(transform.position, target.transform.position) > 2.0f)
 			{
-				isWalking = true;
 				animator.SetBool("IsWalking", true);
-				LookAtTarget();
+				LookAtTarget(target);
 				transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
 			}
 			else
 			{
-				if(isWalking)
 				animator.SetFloat("IdleOffset", Random.Range(0.0f, 0.8f));
-				isWalking = false;
 				animator.SetBool("IsWalking", false);
-				LookAtTarget();
+				LookAtTarget(target);
+				SetMovementType(MovementType.Idle);
 			}
-		}
-		else
-		{
-			SetCurrentAction(movementActions.Idle);
 		}
 	}
 
 	public void WalkToTarget(Transform t)
 	{
-		atTarget = false;
 		target = t;
-		SetCurrentAction(movementActions.WalkToTarget);
-	}
-	public void Movement_WalkToTarget()
-	{
-		if(target != null)
-		{
-			if(Vector3.Distance(transform.position, target.transform.position) > 2.0f)
-			{
-				isWalking = true;
-				animator.SetBool("IsWalking", true);
-				LookAtTarget();
-				transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-			}
-			else
-			{
-				atTarget = true;
-				if(isWalking)
-				animator.SetFloat("IdleOffset", Random.Range(0.0f, 0.8f));
-				isWalking = false;
-				animator.SetBool("IsWalking", false);
-				LookAtTarget();
-				target = null;
-			}
-		}
-		else
-		{
-			SetCurrentAction(movementActions.Idle);
-			FinishedAction();
-		}
+		SetMovementType(MovementType.Walking);
 	}
 
-	private void FinishedAction()
-	{
-		GetComponent<ActionExecutor>().StopExecuting();
-	}
-
-	public void TurnToTarget(Transform t)
-	{
-		target = t;
-		SetCurrentAction(movementActions.TurnToTarget);
-	}
-	public void Movement_TurnToTarget()
+	public void Movement_TurnToTarget(Transform target)
     {
 		if(target != null)
 		{
@@ -136,16 +81,17 @@ public class MovementManager : MonoBehaviour
 				transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
 			}
 			else
-			{
-				target = null;
-			}
-		}
-		else
-		{
-			SetCurrentAction(movementActions.Idle);
+				SetMovementType(MovementType.Idle);
 		}
     }
-	public void LookAtTarget()
+
+	public void TurnToTarget(Transform t)
+	{
+		target = t;
+		movementType = MovementType.Turning;
+	}
+
+	private void LookAtTarget(Transform target)
 	{
 		var lookPos = target.position - transform.position;
 		lookPos.y = 0;
@@ -153,9 +99,9 @@ public class MovementManager : MonoBehaviour
 		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
 	}
 
-	void SetCurrentAction(movementActions action)
+	private void SetMovementType(MovementType mt)
 	{
-		currentAction = action;
+		movementType = mt;
 	}
 
 }

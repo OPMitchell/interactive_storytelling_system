@@ -1,6 +1,6 @@
 <Actions>
 	<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" effect=""/>
-	<Action name="EatBread" type="IncreaseStat" sender="Bob" target="%s" dialogid="" precondition="" effect="hunger - 0.1"/>
-	<Action name="EatMeat" type="IncreaseStat" sender="Bob" target="%s" dialogid="" precondition="anger lt 0.5" effect="hunger - 0.15"/>
-	<Action name="ReduceAnger" type="DecreaseStat" sender="Bob" target="%s" dialogid="" precondition="" effect="anger - 0.1"/>
+	<Action name="EatBread" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="anger lt 0.5" effect="hunger - 0.1"/>
+	<Action name="EatMeat" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="anger lt 0.5" effect="hunger - 0.15"/>
+	<Action name="ReduceAnger" type="DecreaseStat" sender="Bob" target="Bob" dialogid="" precondition="" effect="anger - 0.1"/>
 </Actions>

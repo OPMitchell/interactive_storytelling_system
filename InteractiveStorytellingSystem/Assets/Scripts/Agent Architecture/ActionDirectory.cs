@@ -29,25 +29,25 @@ public class ActionDirectory : MonoBehaviour
 		return null;
 	}
 
-	public List<Action> GetActionsByEffect(string effect)
+	public List<Action> GetActionsByPrecondition(string effect)
 	{
 		string[] split = GameManager.SplitEffectString(effect);
 		if(split[1] == "lt")
 		{
-			return GetActionByParameterAndOperation(split[0], "-");
+			return GetActionsByParameterAndOperation(split[0], "-");
 		}
 		else if(split[1] == "gt")
 		{
-			return GetActionByParameterAndOperation(split[0], "+");
+			return GetActionsByParameterAndOperation(split[0], "+");
 		}
 		else
 		{
-			Debug.Log("Error! Tried to parse an action effect which doesn't contain a '<' or '>'!");
+			Debug.Log("Error! Tried to parse an action precondition which doesn't contain a '<' or '>'!");
 			return null;
 		}
 	}
 
-	public List<Action> GetActionByParameterAndOperation(string parameter, string operation)
+	private List<Action> GetActionsByParameterAndOperation(string parameter, string operation)
 	{
 		List<Action> result = new List<Action>();
 		foreach(Action action in ActionList)
@@ -56,7 +56,23 @@ public class ActionDirectory : MonoBehaviour
 			{
 				string[] s = GameManager.SplitEffectString(action.Effect);
 				if(s[0] == parameter && s[1] == operation)
-					result.Add(action);
+					result.Add(new Action(action));
+			}
+		}
+		return result;
+	}
+
+	public List<Action> GetActionsByEffect(Action action)
+	{
+		string[] x = GameManager.SplitEffectString(action.Effect);
+		List<Action> result = new List<Action>();
+		foreach(Action a in ActionList)
+		{
+			if(a.Effect != "")
+			{
+				string[] y = GameManager.SplitEffectString(a.Effect);
+				if(x[0] == y[0] && x[1] == y[1])
+					result.Add(new Action(a));
 			}
 		}
 		return result;

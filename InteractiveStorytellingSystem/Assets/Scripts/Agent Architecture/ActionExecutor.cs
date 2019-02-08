@@ -9,93 +9,87 @@ namespace InteractiveStorytellingSystem
     public class ActionExecutor : MonoBehaviour
     {
         public bool Executing {get; private set;}
-        private Action currentAction;
 
         void Start()
         {
             Executing = false;
-            currentAction = null;
         }
 
-        public bool ExecuteAction(Action action)
+        public IEnumerator ExecuteAction(Action action)
         {
-            if(action.Target == "%s")
-                action.Target = transform.name;
-            currentAction = action;
             Executing = true;
-            GameObject sender = GameObject.Find(currentAction.Sender);
-            GameObject target = GameObject.Find(currentAction.Target);
+            GameObject sender = GameObject.Find(action.Sender);
+            GameObject target = GameObject.Find(action.Target);
             if(target != null)
-            {             
+            {       
                 if(action.Type == "WalkToTarget")
                 {
-                    sender.GetComponent<MovementManager>().WalkToTarget(target.transform);
+                    GetComponent<MovementManager>().WalkToTarget(target.transform);
+                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    CompleteAction(action);
                 }
                 else if(action.Type == "FollowTarget")
                 {
-                    sender.GetComponent<MovementManager>().FollowTarget(target.transform);
+                    CancelAction(action);
                 }
                 else if(action.Type == "IncreaseStat")
                 {
-                    Executing = false;
+                    CompleteAction(action);
                 }
                 else if(action.Type == "DecreaseStat")
                 {
-                    Executing = false;
+                    CompleteAction(action);
                 }
                 else if(action.Type == "TalkToTarget")
                 {
                     TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();
                     foreach(Dialog d in DialogManager.Dialog)
                     {
-                        if (d.DialogID == currentAction.DialogID)
+                        if (d.DialogID == action.DialogID)
                         {
                             string speech = d.Value;
-                            speech =  speech.Replace("%t", currentAction.Target);
+                            speech =  speech.Replace("%t", action.Target);
                             GetComponent<MovementManager>().TurnToTarget(target.transform);
-                            StartCoroutine(Speak(textMesh, speech));
-                            break;
+                            StartCoroutine(Speak(action, textMesh, speech));
                         }
                     }
                 }
                 else
                 {
-                    CancelAction();
-                    return false;
+                    Debug.Log("Unknown action: " + GameManager.GetActionInfo(action));    
+                    CancelAction(action);
                 }
             }
             else
             {
-                CancelAction();
-                return false;
+                Debug.Log("Target is null for action: " + GameManager.GetActionInfo(action));
+                CancelAction(action);
             }
-            return true;
         }
 
-        IEnumerator Speak(TextMesh t, string dialog)
+        IEnumerator Speak(Action action, TextMesh t, string dialog)
         {
             t.text = dialog;
             yield return new WaitForSeconds(4);
             t.text = "";
+            CompleteAction(action);
+        }
+
+        private void CancelAction(Action action)
+        {
+            Debug.Log("Action Failed: " + GameManager.GetActionInfo(action));
+            action.status = Status.Failed;
             StopExecuting();
         }
 
-        void Update()
+        private void CompleteAction(Action action)
         {
-            if(!Executing && currentAction != null)
-            {
-                currentAction = null;
-            }
-        }
-
-        private void CancelAction()
-        {
-            Debug.Log("Cancelled action: (name: " + currentAction.Name + ", sender: " + currentAction.Sender + ", target: " + currentAction.Target + ")");
-            currentAction = null;
+            Debug.Log("Action Successful: "+ GameManager.GetActionInfo(action) + "\nSending confirmation to target for appraisal!");
+            action.status = Status.Successful;
             StopExecuting();
         }
 
-        public void StopExecuting()
+        private void StopExecuting()
         {
             Executing = false;
         }
