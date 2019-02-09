@@ -1,0 +1,4 @@
+<Goals>
+	<Goal type="Interest" target="Bob" parameters="hunger lt 0.5"/>
+	<Goal type="Pursuit" target="Rachel" parameters="happiness gt 0.1"/>
+</Goals>

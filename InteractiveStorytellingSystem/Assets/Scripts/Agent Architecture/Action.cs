@@ -26,21 +26,25 @@ namespace InteractiveStorytellingSystem
         public string DialogID { get; set; }
         [XmlAttribute("precondition")]
         public string Precondition { get; set; }
-        [XmlAttribute("effect")]
-        public string Effect { get; set; }
+        [XmlAttribute("sendereffect")]
+        public string SenderEffect { get; set; }
+        [XmlAttribute("targeteffect")]
+        public string TargetEffect { get; set; }
+        [XmlAttribute("parameters")]
+        public string Parameters { get; set; }
 
-        public Status status{ get; set; }
+        public Status Status{ get; set; }
 
 
         public Action()
         {
-            status = Status.notSent;
+            Status = Status.notSent;
         }
 
         public Action(Action a)
         {
             Replace(a);
-            status = Status.notSent;
+            Status = Status.notSent;
         }
 
         public bool HasPrecondition()
@@ -52,7 +56,7 @@ namespace InteractiveStorytellingSystem
 
         public void SetStatus(Status s)
         {
-            status = s;
+            Status = s;
         }
 
         public void Replace(Action newAction)
@@ -63,7 +67,9 @@ namespace InteractiveStorytellingSystem
             this.Target = newAction.Target;
             this.DialogID = newAction.DialogID;
             this.Precondition = newAction.Precondition;
-            this.Effect = newAction.Effect;
+            this.SenderEffect = newAction.SenderEffect;
+            this.TargetEffect = newAction.TargetEffect;
+            this.Parameters = newAction.Parameters;
         }
 
         public bool Compare(Action a)
@@ -74,7 +80,9 @@ namespace InteractiveStorytellingSystem
             && this.Target == a.Target
             && this.DialogID == a.DialogID
             && this.Precondition == a.Precondition
-            && this.Effect == a.Effect
+            && this.SenderEffect == a.SenderEffect
+            && this.TargetEffect == a.TargetEffect
+            && this.Parameters == a.Parameters
             )
                 return true;
             return false;

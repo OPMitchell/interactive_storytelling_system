@@ -43,6 +43,11 @@ public class MovementManager : MonoBehaviour
 		}
 	}
 
+	public bool CheckIfAtLocation(Transform target)
+	{
+		return (Vector3.Distance(transform.position, target.transform.position) < 2.0f);
+	}
+
 	public void Movement_WalkToTarget(Transform target)
 	{
 		if(target != null)

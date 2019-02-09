@@ -40,6 +40,11 @@ namespace InteractiveStorytellingSystem
                 {
                     CompleteAction(action);
                 }
+                else if(action.Type == "PickUpItem")
+                {
+                    GetComponent<Inventory>().Add(action.Parameters);
+                    CompleteAction(action);
+                }
                 else if(action.Type == "TalkToTarget")
                 {
                     TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();
@@ -56,13 +61,13 @@ namespace InteractiveStorytellingSystem
                 }
                 else
                 {
-                    Debug.Log("Unknown action: " + GameManager.GetActionInfo(action));    
+                    Debug.Log("Unknown action: " + Testing.GetActionInfo(action));    
                     CancelAction(action);
                 }
             }
             else
             {
-                Debug.Log("Target is null for action: " + GameManager.GetActionInfo(action));
+                Debug.Log("Target is null for action: " + Testing.GetActionInfo(action));
                 CancelAction(action);
             }
         }
@@ -77,15 +82,15 @@ namespace InteractiveStorytellingSystem
 
         private void CancelAction(Action action)
         {
-            Debug.Log("Action Failed: " + GameManager.GetActionInfo(action));
-            action.status = Status.Failed;
+            Debug.Log("Action Failed: " + Testing.GetActionInfo(action));
+            action.Status = Status.Failed;
             StopExecuting();
         }
 
         private void CompleteAction(Action action)
         {
-            Debug.Log("Action Successful: "+ GameManager.GetActionInfo(action) + "\nSending confirmation to target for appraisal!");
-            action.status = Status.Successful;
+            Debug.Log("Action Successful: "+ Testing.GetActionInfo(action) + "\nSending confirmation to target for appraisal!");
+            action.Status = Status.Successful;
             StopExecuting();
         }
 

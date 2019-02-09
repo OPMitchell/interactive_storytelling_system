@@ -46,5 +46,10 @@ namespace InteractiveStorytellingSystem.ConfigReader
         {
             return StandardDeserialization<List<Dialog>>(dialogListXMLPath, "Dialogs");
         }
+
+        public static List<Goal> ReadGoals(string goalsXMLPath)
+        {
+            return StandardDeserialization<List<Goal>>(goalsXMLPath, "Goals");
+        }
     }
 }

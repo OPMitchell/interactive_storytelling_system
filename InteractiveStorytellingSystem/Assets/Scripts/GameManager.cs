@@ -7,33 +7,21 @@ using System.Linq;
 
 public static class GameManager 
 {
-	public static Character FindCharacter(string name)
+	public static string[] SplitParameterString(string effect)
 	{
-		return GameObject.Find(name).GetComponent<Character>();
-	}
-
-	public static void AddActionToEventManager(Action action)
-	{
-		GameObject.Find("EventManager").GetComponent<EventManager>().AddAction(action);
-	}
-
-	public static string[] SplitEffectString(string effect)
-	{
-		int spaces = effect.Count(char.IsWhiteSpace);
-		if(spaces == 2)
+		if(effect != "")
 		{
-			return effect.Split(' ');
+			int spaces = effect.Count(char.IsWhiteSpace);
+			if(spaces == 2)
+			{
+				return effect.Split(' ');
+			}
+			else
+			{
+				Debug.Log("Error! Tried to parse a malformed action parameter string: " + effect);
+			}
 		}
-		else
-		{
-			Debug.Log("Error! Tried to parse a malformed action effect!");
-			return null;
-		}
-	}
-
-	public static string GetActionInfo(Action action)
-	{
-		return "Action(name = " + action.Name + ", sender = " + action.Sender + ", target = " + action.Target +")";
+		return null;
 	}
 
 	public static void ChangeStat(string characterName, string statName, float value)
@@ -42,7 +30,7 @@ public static class GameManager
 		switch(statName)
 		{
 			case "hunger":
-				FindCharacter(characterName)
+				GameObject.Find(characterName)
 					.GetComponent<PhysicalResourceModel>()
 					.Hunger += value;
 				break;
@@ -56,12 +44,15 @@ public static class GameManager
 		switch(statName)
 		{
 			case "hunger":
-				result = FindCharacter(characterName)
+				result = GameObject.Find(characterName)
 					.GetComponent<PhysicalResourceModel>()
 					.Hunger;
 				break;
 			case "anger":
 				result = 0.6f;
+				break;
+			case "happiness":
+				result = 0.0f;
 				break;
 		}
 		return result;
@@ -69,18 +60,35 @@ public static class GameManager
 
 	public static bool IsParameterTrue(string characterName, string parameter)
 	{
-		string[] split = SplitEffectString(parameter);
+		string[] split = SplitParameterString(parameter);
 		if(split != null)
 		{
-			float actualValue = GetStat(characterName, split[0]);
 			if(split[1] == "lt")
 			{
-				if(actualValue < float.Parse(split[2], CultureInfo.InvariantCulture.NumberFormat))
-					return true;
+				float actualValue = GetStat(characterName, split[0]);
+				if(actualValue <= 1.0f && actualValue >= 0.0f)
+				{
+					if(actualValue < float.Parse(split[2], CultureInfo.InvariantCulture.NumberFormat))
+						return true;
+				}
 			}
 			else if(split[1] == "gt")
 			{
-				if(actualValue > float.Parse(split[2], CultureInfo.InvariantCulture.NumberFormat))
+				float actualValue = GetStat(characterName, split[0]);
+				if(actualValue <= 1.0f && actualValue >= 0.0f)
+				{
+					if(actualValue > float.Parse(split[2], CultureInfo.InvariantCulture.NumberFormat))
+						return true;
+				}
+			}
+			else if(split[0] == "inventory" && split[1] == "contains")
+			{
+				if(GameObject.Find(characterName).GetComponent<Inventory>().Contains(split[2]))
+					return true;
+			}
+			else if(split[0] == "location" && split[1] == "at")
+			{
+				if(GameObject.Find(characterName).GetComponent<MovementManager>().CheckIfAtLocation(GameObject.Find(split[2]).transform))
 					return true;
 			}
 		}

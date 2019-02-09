@@ -1,6 +1,9 @@
 <Actions>
-	<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" effect=""/>
-	<Action name="EatBread" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="anger lt 0.5" effect="hunger - 0.1"/>
-	<Action name="EatMeat" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="anger lt 0.5" effect="hunger - 0.15"/>
-	<Action name="ReduceAnger" type="DecreaseStat" sender="Bob" target="Bob" dialogid="" precondition="" effect="anger - 0.1"/>
+	<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" sendereffect="" targeteffect="" parameters=""/>
+	<Action name="EatBread" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="anger lt 0.5" sendereffect="hunger - 0.1" targeteffect="" parameters=""/>
+	<Action name="EatMeat" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="" sendereffect="hunger - 0.15" targeteffect="" parameters=""/>
+	<Action name="ReduceAnger" type="DecreaseStat" sender="Bob" target="Bob" dialogid="" precondition="" sendereffect="anger - 0.1" targeteffect="" parameters=""/>
+	<Action name="GiveFlowers" type="GiveItem" sender="Bob" target="Rachel" dialogid="" precondition="inventory contains flowers" sendereffect="" targeteffect="happiness + 0.1" parameters=""/>
+	<Action name="PickFlowers" type="PickUpItem" sender="Bob" target="Bob" dialogid="" precondition="location at flowers" sendereffect="inventory contains flowers" targeteffect="" parameters="flowers"/>
+	<Action name="WalkToFlowers" type="WalkToTarget" sender="Bob" target="Bob" dialogid="" precondition="" sendereffect="location at flowers" targeteffect="" parameters=""/>
 </Actions>
