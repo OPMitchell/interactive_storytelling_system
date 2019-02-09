@@ -29,118 +29,50 @@ public class ActionDirectory : MonoBehaviour
 		return null;
 	}
 
-	public List<Action> GetActionsThatSatisfyPrecondition(string target, string precondition)
+	public List<Action> FindActionsByEffect(string target, string effect)
 	{
+		string[] split = GameManager.SplitParameterString(effect);
+		return FindActionsByParameterAndOperation(target, split[0], split[1]);
+	}
+
+	private List<Action> FindActionsByParameterAndOperation(string target, string parameter, string operation)
+	{
+		return ActionList.Where(
+			x => string.Equals(GameManager.SplitParameterString(x.Effect)[0], parameter)
+			&& string.Equals(GameManager.SplitParameterString(x.Effect)[1], operation)
+			&& string.Equals(x.Target, target)
+		).ToList();
+	}
+
+	private List<Action> FindActionsByParameterOperationAndValue(string target, string parameter, string operation, string value)
+	{
+		return ActionList.Where(
+			x => string.Equals(GameManager.SplitParameterString(x.Effect)[0], parameter)
+			&& string.Equals(GameManager.SplitParameterString(x.Effect)[1], operation)
+			&& string.Equals(GameManager.SplitParameterString(x.Effect)[2], value)
+			&& string.Equals(x.Target, target)
+		).ToList();
+	}
+
+	public List<Action> FindActionsSatisfyingPrecondition(string target, string precondition)
+	{
+		List<Action> result = null;
 		string[] split = GameManager.SplitParameterString(precondition);
-		if(split[1] == "lt")
+		switch(split[1])
 		{
-			return GetActionsByParameterAndOperation(target, split[0], "-");
-		}
-		else if(split[1] == "gt")
-		{
-			return GetActionsByParameterAndOperation(target, split[0], "+");
-		}
-		else if(split[0] == "inventory" && split[1] == "contains")
-		{
-			return GetActionsByParameterOperationAndValue(target, split[0], "contains", split[2]);
-		}
-		else if(split[0] == "location" && split[1] == "at")
-		{
-			return GetActionsByParameterOperationAndValue(target, split[0], "at", split[2]);
-		}
-		else
-		{
-			Debug.Log("Error! Tried to parse an action precondition which doesn't contain a valid operator!");
-			return null;
-		}
-	}
-
-	private List<Action> GetActionsByParameterOperationAndValue(string target, string parameter, string operation, string value)
-	{
-		List<Action> result = new List<Action>();
-		foreach(Action action in ActionList)
-		{
-			string[] s = null;
-			if(action.Target == target)
-			{
-				if(target == transform.name)
-					s = GameManager.SplitParameterString(action.SenderEffect);
-				else
-					s = GameManager.SplitParameterString(action.TargetEffect);
-			}
-			if(s != null)
-			{
-			if(s[0] == parameter && s[1] == operation && s[2] == value)
-				result.Add(new Action(action));
-			}
+			case "lessthan":
+				result = FindActionsByParameterAndOperation(target, split[0], "-");
+			break;
+			case "greaterthan":
+				result = FindActionsByParameterAndOperation(target, split[0], "+");
+			break;
+			case "contains":
+				result = FindActionsByParameterOperationAndValue(target, split[0], "contains", split[2]);
+			break;
+			case "at":
+				result = FindActionsByParameterOperationAndValue(target, split[0], "at", split[2]);
+			break;
 		}
 		return result;
 	}
-
-	private List<Action> GetActionsByParameterAndOperation(string target, string parameter, string operation)
-	{
-		List<Action> result = new List<Action>();
-		foreach(Action action in ActionList)
-		{
-			string[] s = null;
-			if(action.Target == target)
-			{
-				if(target == transform.name)
-					s = GameManager.SplitParameterString(action.SenderEffect);
-				else
-					s = GameManager.SplitParameterString(action.TargetEffect);
-			}
-			if(s != null)
-			{
-				if(s[0] == parameter && s[1] == operation)
-					result.Add(new Action(action));
-			}
-		}
-		return result;
-	}
-
-	public List<Action> GetActionsBySenderEffect(Action action)
-	{
-		List<Action> result = new List<Action>();
-		if(action.SenderEffect != "")
-		{
-			string[] x = GameManager.SplitParameterString(action.SenderEffect);
-			foreach(Action candidate in ActionList)
-			{
-				if(candidate.Target == transform.name)
-				{
-					if(candidate.SenderEffect != "" && (GameManager.IsParameterTrue(transform.name, candidate.Precondition) || candidate.Precondition == ""))
-					{
-						string[] y = GameManager.SplitParameterString(candidate.SenderEffect);
-						if(x[0] == y[0] && x[1] == y[1])
-							result.Add(new Action(candidate));
-					}
-				}
-			}
-		}
-		return result;
-	}
-
-	public List<Action> GetActionsByTargetEffect(Action action)
-	{
-		List<Action> result = new List<Action>();
-		if(action.TargetEffect != "")
-		{
-			string[] x = GameManager.SplitParameterString(action.TargetEffect);
-			foreach(Action candidate in ActionList)
-			{
-				if(candidate.Target == action.Target)
-				{
-					if(candidate.TargetEffect != "" && (GameManager.IsParameterTrue(transform.name, candidate.Precondition) || candidate.Precondition == ""))
-					{
-						string[] y = GameManager.SplitParameterString(candidate.TargetEffect);
-						if(x[0] == y[0] && x[1] == y[1])
-							result.Add(new Action(candidate));
-					}
-				}
-			}
-		}
-		return result;
-	}
-
 }

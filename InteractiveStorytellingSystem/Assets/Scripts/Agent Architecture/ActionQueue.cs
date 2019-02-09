@@ -29,9 +29,11 @@ public class ActionQueue : EventPriorityQueue
         Debug.Log(actionInfo + " has been started");
         StartCoroutine(GetComponent<ActionExecutor>().ExecuteAction(action));
         yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
-        if(action.Status == Status.Successful && action.Target != "Player")
+        if(action.Status == Status.Successful)
         {
-            GameObject.Find(action.Target).GetComponent<ReceivingQueue>().QueueAction(action);
+            Transform target = GameManager.FindGameObject(action.Target);
+            if(target.GetComponent<ReceivingQueue>() != null)
+                target.GetComponent<ReceivingQueue>().QueueAction(action);
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour 
 {
-	List<string> items = new List<string>();
+	private List<string> items = new List<string>();
 
 	public bool Contains(string item)
 	{
@@ -14,5 +14,10 @@ public class Inventory : MonoBehaviour
 	public void Add(string item)
 	{
 		items.Add(item);
+	}
+
+	public List<string> GetList()
+	{
+		return items;
 	}
 }

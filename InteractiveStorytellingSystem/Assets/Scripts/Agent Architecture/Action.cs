@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace InteractiveStorytellingSystem
 {
@@ -26,10 +27,8 @@ namespace InteractiveStorytellingSystem
         public string DialogID { get; set; }
         [XmlAttribute("precondition")]
         public string Precondition { get; set; }
-        [XmlAttribute("sendereffect")]
-        public string SenderEffect { get; set; }
-        [XmlAttribute("targeteffect")]
-        public string TargetEffect { get; set; }
+        [XmlAttribute("effect")]
+        public string Effect { get; set; }
         [XmlAttribute("parameters")]
         public string Parameters { get; set; }
 
@@ -49,10 +48,50 @@ namespace InteractiveStorytellingSystem
 
         public bool HasPrecondition()
 	    {
-            if(Precondition == "")
-                return false;
-            return true;
+            return (Precondition != "");
 	    }
+
+        public bool IsPreconditionSatisfied()
+        {
+            bool result = false;
+            string[] split = GameManager.SplitParameterString(Precondition);
+            string statName = split[0];
+            string operation = split[1];
+            string value = split[2];
+            switch(statName)
+            {
+                case "hunger": 
+                    result = IsFloatPreconditionSatisfied(operation, value, GameManager.GetStat<float>(Target, statName));
+                break;
+                case "anger":
+                    result = IsFloatPreconditionSatisfied(operation, value, GameManager.GetStat<float>(Target, statName));
+                break;
+                case "happiness":
+                    result = IsFloatPreconditionSatisfied(operation, value, GameManager.GetStat<float>(Target, statName));
+                    break;
+                case "inventory":
+                    result = GameManager.FindGameObject(Target).GetComponent<Inventory>().Contains(value);
+                break;
+                case "location":
+                    result = GameManager.FindGameObject(Target).GetComponent<MovementManager>().CheckIfAtLocation(GameManager.FindGameObject(value));
+                break;
+            }
+            return result;
+        }
+
+        private bool IsFloatPreconditionSatisfied(string operation, string value, float actualValue)
+        {
+            float Value = float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
+            if(operation == "lessthan")
+            {
+                return(actualValue < Value);
+            }
+            else if (operation == "greaterthan")
+            {
+                return(actualValue > Value);
+            }
+            return false;
+        }
 
         public void SetStatus(Status s)
         {
@@ -67,8 +106,7 @@ namespace InteractiveStorytellingSystem
             this.Target = newAction.Target;
             this.DialogID = newAction.DialogID;
             this.Precondition = newAction.Precondition;
-            this.SenderEffect = newAction.SenderEffect;
-            this.TargetEffect = newAction.TargetEffect;
+            this.Effect = newAction.Effect;
             this.Parameters = newAction.Parameters;
         }
 
@@ -80,8 +118,7 @@ namespace InteractiveStorytellingSystem
             && this.Target == a.Target
             && this.DialogID == a.DialogID
             && this.Precondition == a.Precondition
-            && this.SenderEffect == a.SenderEffect
-            && this.TargetEffect == a.TargetEffect
+            && this.Effect == a.Effect
             && this.Parameters == a.Parameters
             )
                 return true;

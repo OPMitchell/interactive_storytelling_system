@@ -22,7 +22,7 @@ namespace InteractiveStorytellingSystem
         public bool Complete {get; set;}
 
         [XmlIgnore]
-        public LinkedList<Action> Plan {get; private set;}
+        public Plan Plan {get; private set;}
         public List<Action> FailedActions { get; private set; }
         public int TimesFailed { get; set; }
 
@@ -41,7 +41,7 @@ namespace InteractiveStorytellingSystem
             Complete = false;
         }
 
-        public void SetPlan(LinkedList<Action> p)
+        public void SetPlan(Plan p)
         {
             Plan = p;
         }
