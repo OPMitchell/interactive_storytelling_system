@@ -45,6 +45,10 @@ namespace InteractiveStorytellingSystem
                     GetComponent<Inventory>().Add(action.Parameters);
                     CompleteAction(action);
                 }
+                else if(action.Type == "GiveItem")
+                {
+                    CompleteAction(action);
+                }
                 else if(action.Type == "TalkToTarget")
                 {
                     TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();

@@ -32,7 +32,8 @@ public class ActionDirectory : MonoBehaviour
 	public List<Action> FindActionsByEffect(string target, string effect)
 	{
 		string[] split = GameManager.SplitParameterString(effect);
-		return FindActionsByParameterAndOperation(target, split[0], split[1]);
+		List<Action> actionList = FindActionsByParameterAndOperation(target, split[0], split[1]);
+		return new List<Action>(actionList);
 	}
 
 	private List<Action> FindActionsByParameterAndOperation(string target, string parameter, string operation)

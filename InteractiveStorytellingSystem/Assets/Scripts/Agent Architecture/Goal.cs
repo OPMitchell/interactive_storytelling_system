@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using InteractiveStorytellingSystem;
+using System.Linq;
 
 namespace InteractiveStorytellingSystem
 {
@@ -48,22 +49,10 @@ namespace InteractiveStorytellingSystem
 
         public void AddFailedAction(Action action)
         {
-            Action newA = new Action(action);
-
-            bool exists = false;
-            foreach(Action a in FailedActions)
+            if(!FailedActions.Any(x => x.Compare(action)))
             {
-                if(a.Compare(newA))
-                {
-                    exists = true;
-                    break;
-                }
+                FailedActions.Add(new Action(action));
             }
-            if(!exists)
-            {
-                FailedActions.Add(newA);
-            }
-
         }
     }
 }

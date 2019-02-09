@@ -1,4 +1,4 @@
 <Goals>
-	<!--<Goal type="Interest" target="Bob" parameters="hunger lessthan 0.5"/>-->
+	<Goal type="Interest" target="Bob" parameters="hunger lessthan 0.5"/>
 	<Goal type="Pursuit" target="Rachel" parameters="happiness greaterthan 0.1"/>
 </Goals>

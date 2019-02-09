@@ -39,9 +39,10 @@ public class ContinuousActionPlanner : MonoBehaviour
 	}
 
 	// Creates a collection of plans and returns it. Each LinkedList of actions represents one plan for achieving the specified goal.
-	private void CreatePlans(string target, string parameters, PlanList plans, Plan p)
+	private void CreatePlans(string target, string parameters, PlanList plans, Plan p, List<Action> ignoreList)
 	{
 		List<Action> matches = actionDirectory.FindActionsSatisfyingPrecondition(target, parameters);
+		RemovePreviouslyFailedActions(matches, ignoreList);
 		foreach(Action action in matches)
 		{
 			Plan newPlan = new Plan(p);
@@ -56,9 +57,27 @@ public class ContinuousActionPlanner : MonoBehaviour
 				string[] split = GameManager.SplitParameterString(action.Precondition);
 				if(split[0] == "location")
 					nextTarget = split[2];		
-				CreatePlans(nextTarget, action.Precondition, plans, newPlan);
+				CreatePlans(nextTarget, action.Precondition, plans, newPlan, ignoreList);
 			}
 		}
+	}
+
+	private void RemovePreviouslyFailedActions(List<Action> actionList, List<Action> ignoreList)
+	{
+		actionList.RemoveAll(x => ignoreList.Any(a => a.Compare(x)));
+	}
+
+	private bool ReplaceAction(Action action, List<Action> ignoreList)
+	{
+		List<Action> actions = actionDirectory.FindActionsByEffect(action.Target, action.Effect);
+		RemovePreviouslyFailedActions(actions, ignoreList);
+		if(actions.Count > 0)
+		{
+			action.Replace(actions[Random.Range(0, actions.Count)]);
+			action.SetStatus(Status.notSent);
+			return true;
+		}
+		return false;
 	}
 
 	// Called every frame.
@@ -84,7 +103,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 				{
 					// Create a LinkedList to store the plans and populate it.
 					PlanList planList = new PlanList();
-					CreatePlans(g.Target, g.Parameters, planList, new Plan());
+					CreatePlans(g.Target, g.Parameters, planList, new Plan(), g.FailedActions);
 					// If there are no plans in the collection then the goal is already satisifed or its impossible to reach.
 					if(planList.Count() < 1)
 					{
@@ -118,7 +137,26 @@ public class ContinuousActionPlanner : MonoBehaviour
 						// If the action has failed to execute, we need to perform action repair and select an alternate action or a new plan altogether.
 						else if(action.Status == Status.Failed)
 						{
-							toRemove.Add(action);
+							g.AddFailedAction(action);
+							if(!ReplaceAction(action, g.FailedActions))
+							{
+								Testing.PrintMessage("Couldn't find replacement action! Attempting to replan...");
+								g.TimesFailed++;
+								if(g.TimesFailed >= maxFail)
+								{
+									Testing.PrintMessage("Failed to replan more than max allowance!");
+									g.Complete = true;
+								}
+								else
+								{
+									g.SetPlan(null);
+								}
+							}
+							else
+							{
+								Testing.PrintMessage("Found replacement action!");
+							}
+							break;
 						}
 						// if the action has not yet been sent, send it to the agent's action queue.
 						else if(action.Status == Status.notSent)
