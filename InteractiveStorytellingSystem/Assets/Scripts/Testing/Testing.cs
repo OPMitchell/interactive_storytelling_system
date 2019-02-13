@@ -16,4 +16,15 @@ public static class Testing
 	{
 		Debug.Log(message);
 	}
+
+	public static string GetActionQueue(Transform agent)
+	{
+		ActionQueue aq = agent.GetComponent<ActionQueue>();
+		string queue = agent.name + "'s Action Queue:";
+		foreach (var kvp in aq.GetQueue().GetQueue())
+		{
+			queue += "\n 	" + GetActionInfo(kvp.Value);
+		}
+		return queue;
+	}
 }

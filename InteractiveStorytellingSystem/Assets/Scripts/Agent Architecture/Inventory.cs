@@ -16,6 +16,14 @@ public class Inventory : MonoBehaviour
 		items.Add(item);
 	}
 
+	public void Remove(string item)
+	{
+		if(Contains(item))
+			items.Remove(item);
+		else
+			Debug.LogError(transform.name + " tried to remove item: " + item + " from their inventory but their inventory doesn't contain it!");
+	}
+
 	public List<string> GetList()
 	{
 		return items;

@@ -8,9 +8,9 @@ using System;
 
 public static class GameManager 
 {
-	public static Transform FindGameObject(string name)
+	public static GameObject FindGameObject(string name)
 	{
-		return GameObject.Find(name).transform;
+		return GameObject.Find(name);
 	}
 
 	public static string[] SplitParameterString(string effect)

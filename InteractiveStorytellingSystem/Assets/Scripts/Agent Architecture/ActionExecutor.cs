@@ -42,37 +42,53 @@ namespace InteractiveStorytellingSystem
                 }
                 else if(action.Type == "PickUpItem")
                 {
+                    GetComponent<MovementManager>().WalkToTarget(GameManager.FindGameObject(action.Parameters).transform);
+                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
                     GetComponent<Inventory>().Add(action.Parameters);
+                    yield return new WaitForSeconds(1.0f);
                     CompleteAction(action);
                 }
                 else if(action.Type == "GiveItem")
                 {
+                    GetComponent<MovementManager>().WalkToTarget(target.transform);
+                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    GetComponent<Inventory>().Remove(action.Parameters);
                     CompleteAction(action);
                 }
                 else if(action.Type == "TalkToTarget")
                 {
-                    TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();
-                    foreach(Dialog d in DialogManager.Dialog)
-                    {
-                        if (d.DialogID == action.DialogID)
-                        {
-                            string speech = d.Value;
-                            speech =  speech.Replace("%t", action.Target);
-                            GetComponent<MovementManager>().TurnToTarget(target.transform);
-                            StartCoroutine(Speak(action, textMesh, speech));
-                        }
-                    }
+                    TalkToTarget(sender, target, action);
                 }
                 else
                 {
                     Debug.Log("Unknown action: " + Testing.GetActionInfo(action));    
                     CancelAction(action);
                 }
+
+                if(action.DialogID != "")
+                {
+                    TalkToTarget(sender, target, action);
+                }
             }
             else
             {
                 Debug.Log("Target is null for action: " + Testing.GetActionInfo(action));
                 CancelAction(action);
+            }
+        }
+
+        private void TalkToTarget(GameObject sender, GameObject target, Action action)
+        {
+            TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();
+            foreach(Dialog d in DialogManager.Dialog)
+            {
+                if (d.DialogID == action.DialogID)
+                {
+                    string speech = d.Value;
+                    speech =  speech.Replace("%t", action.Target);
+                    GetComponent<MovementManager>().TurnToTarget(target.transform);
+                    StartCoroutine(Speak(action, textMesh, speech));
+                }
             }
         }
 

@@ -8,7 +8,7 @@
 	<Dialog dialogid="Insult_SadResponse">
 		<Value>Aww... that hurt my feelings!</Value>
 	</Dialog>
-	<Dialog dialogid="FollowPlayer">
-		<Value>I'm going to follow Oli now!</Value>
+	<Dialog dialogid="GiveFlowers">
+		<Value>Here are some flowers for you %t!</Value>
 	</Dialog>
 </Dialogs>

@@ -39,7 +39,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 	}
 
 	// Creates a collection of plans and returns it. Each LinkedList of actions represents one plan for achieving the specified goal.
-	private void CreatePlans(string target, string parameters, PlanList plans, Plan p, List<Action> ignoreList)
+	private void CreatePlans(Goal g, string target, string parameters, PlanList plans, Plan p, List<Action> ignoreList)
 	{
 		List<Action> matches = actionDirectory.FindActionsSatisfyingPrecondition(target, parameters);
 		RemovePreviouslyFailedActions(matches, ignoreList);
@@ -57,7 +57,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 				string[] split = GameManager.SplitParameterString(action.Precondition);
 				if(split[0] == "location")
 					nextTarget = split[2];		
-				CreatePlans(nextTarget, action.Precondition, plans, newPlan, ignoreList);
+				CreatePlans(g, nextTarget, action.Precondition, plans, newPlan, ignoreList);
 			}
 		}
 	}
@@ -103,17 +103,18 @@ public class ContinuousActionPlanner : MonoBehaviour
 				{
 					// Create a LinkedList to store the plans and populate it.
 					PlanList planList = new PlanList();
-					CreatePlans(g.Target, g.Parameters, planList, new Plan(), g.FailedActions);
+					CreatePlans(g, g.Target, g.Parameters, planList, new Plan(), g.FailedActions);
 					// If there are no plans in the collection then the goal is already satisifed or its impossible to reach.
 					if(planList.Count() < 1)
 					{
 						// Set the goal to complete and it will be removed from the collection the next time Update() is run.
 						g.Complete = true;
-						Debug.Log(transform.name + " cancelled Goal: " + g.Parameters + " because a plan is impossible to make or goal is already satisfied.");
+						Debug.Log(transform.name + " cancelled Goal: " + g.Parameters + " because a plan is impossible to make.");
 					}
 					// If we successfully constructed one or more plans then we need to pick one for the agent to use.
 					else
 					{
+						Debug.Log(transform.name + " created a plan for Goal: " + g.Parameters);
 						//pick a plan from List<LinkedList<Action>> plans and assign to g.plan
 						g.SetPlan(planList.GetBestPlan());
 					}

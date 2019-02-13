@@ -28,6 +28,11 @@ namespace InteractiveStorytellingSystem
             return min;
         }
 
+        public List<KeyValuePair<int, Action>> GetQueue()
+        {
+            return pq;
+        }
+
         public bool IsEmpty()
         {
             if(pq.Count == 0)

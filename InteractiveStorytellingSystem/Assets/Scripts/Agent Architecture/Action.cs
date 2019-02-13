@@ -73,7 +73,17 @@ namespace InteractiveStorytellingSystem
                     result = GameManager.FindGameObject(Target).GetComponent<Inventory>().Contains(value);
                 break;
                 case "location":
-                    result = GameManager.FindGameObject(Target).GetComponent<MovementManager>().CheckIfAtLocation(GameManager.FindGameObject(value));
+                {
+                    try
+                    {
+                        result = GameManager.FindGameObject(Target).GetComponent<MovementManager>().CheckIfAtLocation(GameManager.FindGameObject(value).transform);
+                    }
+                    catch(Exception ex)
+                    {
+                        Testing.PrintMessage(ex.ToString());
+                        result = false;
+                    }
+                }
                 break;
             }
             return result;

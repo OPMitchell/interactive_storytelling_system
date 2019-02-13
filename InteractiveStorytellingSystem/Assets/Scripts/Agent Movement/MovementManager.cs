@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using InteractiveStorytellingSystem;
 
 public class MovementManager : MonoBehaviour
@@ -45,21 +46,26 @@ public class MovementManager : MonoBehaviour
 
 	public bool CheckIfAtLocation(Transform target)
 	{
-		return (Vector3.Distance(transform.position, target.transform.position) < 2.0f);
+		if(target != null)
+			return (Vector3.Distance(transform.position, target.transform.position) < 2.0f);
+		return false;
 	}
 
 	public void Movement_WalkToTarget(Transform target)
 	{
 		if(target != null)
 		{
+			NavMeshAgent agent = GetComponent<NavMeshAgent>();
 			if(Vector3.Distance(transform.position, target.transform.position) > 2.0f)
 			{
+				agent.isStopped = false;
 				animator.SetBool("IsWalking", true);
 				LookAtTarget(target);
-				transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+          		agent.destination = target.position; 
 			}
 			else
 			{
+			    agent.isStopped = true;
 				animator.SetFloat("IdleOffset", Random.Range(0.0f, 0.8f));
 				animator.SetBool("IsWalking", false);
 				LookAtTarget(target);
