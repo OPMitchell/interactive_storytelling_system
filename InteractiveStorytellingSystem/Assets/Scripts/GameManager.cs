@@ -33,17 +33,16 @@ public static class GameManager
 	public static T GetStat<T>(string target, string statname)
 	{
 		object result = null;
-		switch(statname)
+		if(statname == "hunger")
 		{
-			case "hunger": 
-				result = FindGameObject(target).GetComponent<PhysicalResourceModel>().Hunger;
-			break;
-			case "anger": 
-				result = 0.6f;
-			break;
-			case "happiness":
-				result = 0.0f;
-			break;
+			result = FindGameObject(target).GetComponent<PhysicalResourceModel>().Hunger;
+		}
+		else if
+		(
+			statname == "joy" || statname == "distress" || statname == "hope" ||
+			statname == "fear" || statname == "satisfaction" || statname == "fearsconfirmed"
+		)
+			result = FindGameObject(target).GetComponent<EmotionalPersonalityModel>().GetEmotionValue(statname)
 		}
 		return (T)Convert.ChangeType(result, typeof(T));
 	}

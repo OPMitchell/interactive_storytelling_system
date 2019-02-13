@@ -27,9 +27,9 @@ namespace InteractiveStorytellingSystem.ConfigReader
                 throw new FileNotFoundException("Could not find personality file: " + absolutePath + "!");
         }
 
-        public static EmotionalPersonality ReadEmotionData (string personalXMLPath)
+        public static EmotionalPersonalityModel ReadEmotionData (string personalXMLPath)
         {
-            return StandardDeserialization<EmotionalPersonality>(personalXMLPath, "Emotions");
+            return StandardDeserialization<EmotionalPersonalityModel>(personalXMLPath, "Emotions");
         }
 
         public static List<Action> ReadActionList(string actionListXMLPath)

@@ -9,7 +9,7 @@ namespace InteractiveStorytellingSystem
     /// Unique emotional profiles are created by reading in each character's named .xml file.
     /// </summary>
 
-    public class EmotionalPersonality 
+    public class EmotionalPersonalityModel
     {
         //Each character has 22 individual emotions. Hold these in an array.
         [XmlElement("PersonalEmotion", typeof(PersonalEmotion))]
@@ -54,23 +54,6 @@ namespace InteractiveStorytellingSystem
             }
             throw new KeyNotFoundException("Could not find an emotion with that name!");
         }
-
-        public void PrintAll()
-        {
-            foreach(Emotion e in Emotions)
-            {
-                object obj = e.GetValue();
-                if (obj.GetType() == typeof(int))
-                    Console.WriteLine("(" + e.Name + " = " + (int)obj + ")");
-                
-                else if (obj.GetType() == typeof(ExternalEmotionData))
-                {
-                    Console.WriteLine("(" + e.Name + " = ");
-                    foreach (KeyValuePair kvp in ((ExternalEmotionData)obj).KeyValuePairs)
-                        Console.WriteLine("     (" + kvp.Key + " = " + kvp.Value + ")");
-                }
-                
-            }
-        }
+        
     }
 }

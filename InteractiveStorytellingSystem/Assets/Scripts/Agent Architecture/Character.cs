@@ -9,7 +9,7 @@ namespace InteractiveStorytellingSystem
     {
         [SerializeField] public string Name; //name of the character
 
-        public EmotionalPersonality Personality { get; private set; } //emotional personality of the character
+        public EmotionalPersonalityModel Personality { get; private set; } //emotional personality of the character
 
         private MemoryPool mp = new MemoryPool();
 
