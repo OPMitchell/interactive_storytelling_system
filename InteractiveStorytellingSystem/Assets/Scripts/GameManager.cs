@@ -37,12 +37,9 @@ public static class GameManager
 		{
 			result = FindGameObject(target).GetComponent<PhysicalResourceModel>().Hunger;
 		}
-		else if
-		(
-			statname == "joy" || statname == "distress" || statname == "hope" ||
-			statname == "fear" || statname == "satisfaction" || statname == "fearsconfirmed"
-		)
-			result = FindGameObject(target).GetComponent<EmotionalPersonalityModel>().GetEmotionValue(statname)
+		else if(statname == "happiness")
+		{
+			result = 0.0f;
 		}
 		return (T)Convert.ChangeType(result, typeof(T));
 	}
