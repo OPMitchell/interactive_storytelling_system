@@ -24,7 +24,18 @@ namespace InteractiveStorytellingSystem
             {       
                 if(action.Type == "WalkToTarget")
                 {
-                    GetComponent<MovementManager>().WalkToTarget(target.transform);
+                    bool itemExists = false;
+                    try
+                    {
+                        GetComponent<MovementManager>().WalkToTarget(target.transform);
+                        itemExists = true;
+                    }
+                    catch(NullReferenceException ex)
+                    {
+                        CancelAction(action);
+                        Testing.PrintMessage(transform.name + " tried to walk to target: " + target.transform.name + " but that object doesn't exist in the scene.");
+                    }
+                    if(itemExists)
                     yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
                     CompleteAction(action);
                 }
@@ -42,11 +53,24 @@ namespace InteractiveStorytellingSystem
                 }
                 else if(action.Type == "PickUpItem")
                 {
-                    GetComponent<MovementManager>().WalkToTarget(GameManager.FindGameObject(action.Parameters).transform);
-                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
-                    GetComponent<Inventory>().Add(action.Parameters);
-                    yield return new WaitForSeconds(1.0f);
-                    CompleteAction(action);
+                    bool itemExists = false;
+                    try
+                    {
+                        GetComponent<MovementManager>().WalkToTarget(GameManager.FindGameObject(action.Parameters).transform);
+                        itemExists = true;
+                    }
+                    catch(NullReferenceException ex)
+                    {
+                        CancelAction(action);
+                        Testing.PrintMessage(transform.name + " tried to pick up item: " + action.Parameters + " but that item doesn't exist in the scene.");
+                    }
+                    if(itemExists)
+                    {
+                        yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                        GetComponent<Inventory>().Add(action.Parameters);
+                        yield return new WaitForSeconds(1.0f);
+                        CompleteAction(action);
+                    }
                 }
                 else if(action.Type == "GiveItem")
                 {

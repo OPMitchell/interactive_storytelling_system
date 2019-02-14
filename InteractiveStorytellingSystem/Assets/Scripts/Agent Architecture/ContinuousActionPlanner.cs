@@ -172,7 +172,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 						g.Plan.RemoveAction(action);
 					}
 					// If all actions have been executed then the goal has been reached and can be removed.
-					if(g.Plan.CountActions() <= 0)
+					if(g.Plan != null && g.Plan.CountActions() <= 0)
 					{
 						Debug.Log(transform.name + " completed Goal: " + g.Parameters + "!");
 						g.Complete = true;
