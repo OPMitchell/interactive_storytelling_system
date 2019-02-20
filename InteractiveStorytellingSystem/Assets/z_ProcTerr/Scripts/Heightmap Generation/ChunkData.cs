@@ -56,6 +56,7 @@ public class ChunkData
 		t.terrainData = new TerrainData (); //Create a new TerrainData object to hold data about the terrain
 		t.terrainData.alphamapResolution = dimension; //set the heightmap's alphamap resolution
 		t.terrainData.heightmapResolution = dimension; //set the dimensions of the heightmap
+		t.terrainData.SetDetailResolution(2048, 16);
 		t.heightmapPixelError = 0; //set the pixel error to 0 (lower values = more polygons drawn, so better looking terrain)
 		TerrainCollider tc = terrain.AddComponent<TerrainCollider> (); //Add a TerrainCollider object which allows the use of terrain manipulation tools
 		tc.terrainData = t.terrainData; //Ensure that the TerrainData is shared between the Terrain object and its collider

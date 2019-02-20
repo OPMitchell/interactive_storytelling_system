@@ -14,7 +14,7 @@ namespace InteractiveStorytellingSystem
         {
             Executing = false;
         }
-
+        
         public IEnumerator ExecuteAction(Action action)
         {
             Executing = true;
@@ -76,22 +76,28 @@ namespace InteractiveStorytellingSystem
                 {
                     GetComponent<MovementManager>().WalkToTarget(target.transform);
                     yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    TalkToTarget(sender, target, action, true);
+                    yield return new WaitForSeconds(4);
                     GetComponent<Inventory>().Remove(action.Parameters);
                     CompleteAction(action);
                 }
                 else if(action.Type == "TalkToTarget")
                 {
-                    TalkToTarget(sender, target, action);
+                    GetComponent<MovementManager>().WalkToTarget(target.transform);
+                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    TalkToTarget(sender, target, action, true);
+                }
+                else if(action.Type == "FleeFromSender")
+                {
+                    TalkToTarget(sender, target, action, false);
+                    GetComponent<MovementManager>().FleeFromTarget(sender.transform);
+                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    CompleteAction(action);
                 }
                 else
                 {
                     Debug.Log("Unknown action: " + Testing.GetActionInfo(action));    
                     CancelAction(action);
-                }
-
-                if(action.DialogID != "")
-                {
-                    TalkToTarget(sender, target, action);
                 }
             }
             else
@@ -101,16 +107,17 @@ namespace InteractiveStorytellingSystem
             }
         }
 
-        private void TalkToTarget(GameObject sender, GameObject target, Action action)
+        private void TalkToTarget(GameObject sender, GameObject target, Action action, bool turn)
         {
-            TextMesh textMesh = sender.transform.Find("DialogBox").GetComponent<TextMesh>();
+            TextMesh textMesh = transform.Find("DialogBox").GetComponent<TextMesh>();
             foreach(Dialog d in DialogManager.Dialog)
             {
                 if (d.DialogID == action.DialogID)
                 {
                     string speech = d.Value;
                     speech =  speech.Replace("%t", action.Target);
-                    GetComponent<MovementManager>().TurnToTarget(target.transform);
+                    if(turn)
+                        GetComponent<MovementManager>().TurnToTarget(target.transform);
                     StartCoroutine(Speak(action, textMesh, speech));
                 }
             }

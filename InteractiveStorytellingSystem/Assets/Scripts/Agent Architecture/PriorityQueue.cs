@@ -18,6 +18,11 @@ namespace InteractiveStorytellingSystem
             pq = pq.OrderBy(i => i.Key).ToList();
         }
 
+        public Action Peek()
+        {
+            return pq[0].Value;
+        }
+
         public Action Remove()
         {
             Action min = pq[0].Value;

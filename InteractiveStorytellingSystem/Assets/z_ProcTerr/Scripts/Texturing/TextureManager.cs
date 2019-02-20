@@ -12,6 +12,8 @@ public class TextureSetting
 	[Tooltip("The texture you want to be placed")]
 	public Texture2D Texture; //The texture to be used
 
+	public Texture2D Normal;
+
 	[Range(0,1)]
 	public float MaxHeightAsAPercentage; //the highest altitude the texture can appear at
 	[Range(0,1)]
@@ -32,7 +34,7 @@ public class TextureSetting
 	/// <summary>
 	/// Initializes a new instance of the TextureSetting class.
 	/// </summary>
-	public TextureSetting(float minH, float maxH, float minS, float maxS, float minT, float maxT, float minM, float maxM, Texture2D t)
+	public TextureSetting(float minH, float maxH, float minS, float maxS, float minT, float maxT, float minM, float maxM, Texture2D t, Texture2D normal)
 	{
 		MinHeightAsAPercentage = minH;
 		MaxHeightAsAPercentage = maxH;
@@ -43,6 +45,7 @@ public class TextureSetting
 		MinRainfall = minM;
 		MaxRainfall = maxM;
 		Texture = t;
+		Normal = normal;
 	}
 }
 	
@@ -58,9 +61,9 @@ public class TextureManager : MonoBehaviour
 	/// Textures the chunk according to the user's textureMethod preference and their texture settings.
 	/// </summary>
 	/// <param name="chunk">The ChunkData object of the terrain to texture</param>
-	public void TextureChunk(ChunkData chunk)
+	public void TextureChunk()
 	{
-		TerrainData terrainData = chunk.GetTerrainData (); //Get information about the terrain to texture
+		TerrainData terrainData = GetComponent<Terrain>().terrainData; //Get information about the terrain to texture
 
 		if ((int)textureMethod == 1) 
 		{
@@ -76,7 +79,7 @@ public class TextureManager : MonoBehaviour
 		}
 
 		terrainData.RefreshPrototypes (); //Reloads all the values of the available prototypes in the TerrainData Object.
-		terrainData.SetAlphamaps (0, 0, CreateSplatmap(chunk)); //Assign all splat values in the given map area.
+		terrainData.SetAlphamaps (0, 0, CreateSplatmap(terrainData)); //Assign all splat values in the given map area.
 	}
 
 	/// <summary>
@@ -84,9 +87,8 @@ public class TextureManager : MonoBehaviour
 	/// </summary>
 	/// <returns>The splatmap as a 3D float array</returns>
 	/// <param name="chunk">ChunkData object of terrain</param>
-	private float[,,] CreateSplatmap(ChunkData chunk)
+	private float[,,] CreateSplatmap(TerrainData terrainData)
 	{
-		TerrainData terrainData = chunk.GetTerrainData (); //Get information about the terrain to texture
 		int splatLengths = terrainData.splatPrototypes.Length; //Get how many textures there are to use
 		int alphaMapResolution = terrainData.alphamapResolution;
 		int alphaMapHeight = terrainData.alphamapResolution;
@@ -109,16 +111,8 @@ public class TextureManager : MonoBehaviour
 				switch((int)textureMethod) //identify which texture method to use
 				{
 					case 1:
-						CreateTerrainSplatWeights (splatWeights, chunk, i, j, steepness, heights); //Texture the terrain based on texture settings defined by the user
-						break;
-
-					case 2:
-						CreateHeatSplatWeights (splatWeights, chunk, i, j); //Texture the terrain based on the temperature map
-						break;
-
-					case 3:
-						CreateRainSplatWeights (splatWeights, chunk, i, j); //Texture the terrain based on the rainfall map
-						break;
+						CreateTerrainSplatWeights (splatWeights, terrainData, i, j, steepness, heights); //Texture the terrain based on texture settings defined by the user
+					break;
 				}
 					
 				var totalWeight = splatWeights.Sum ();	//sum all the splat weights,
@@ -145,7 +139,8 @@ public class TextureManager : MonoBehaviour
 		{
 			SplatPrototype x = new SplatPrototype ();
 			x.texture = t[i].Texture;
-			x.tileSize = new Vector2 (6, 6);
+			x.normalMap = t[i].Normal;
+			x.tileSize = new Vector2 (2, 2);
 			a [i] = x;
 		}
 		return a;
@@ -160,51 +155,19 @@ public class TextureManager : MonoBehaviour
 	/// <param name="x">x value of current point in terrain alphamap</param>
 	/// <param name="steepness">Steepness.</param>
 	/// <param name="heights">Heights.</param>
-	private void CreateTerrainSplatWeights(float[] splatWeights, ChunkData chunk, int y, int x, float steepness, float[,] heights)
+	private void CreateTerrainSplatWeights(float[] splatWeights, TerrainData terrainData, int y, int x, float steepness, float[,] heights)
 	{
 		//iterate through all textures settings
 		for (var q = 0; q < Textures.Length; q++) 
 		{
 			if (isCellSteepnessValid (Textures [q], steepness) //check if steepness at x,y is within settings
-				&& isCellTemperatureValid(Textures[q], chunk.temperatureMap[x,y]) //check if temperature at x,y is within settings
-				&& isCellRainfallValid(Textures[q], chunk.precipitationMap[x,y]) //check if rainfall amount at x,y is within settings
-				&& isCellHeightValid(Textures[q], heights[x,y], chunk.initialHeightMap[x,y])) //check if altitude at x,y is within settings
+				&& isCellHeightValid(Textures[q], heights[x,y], terrainData.GetHeight(x,y))) //check if altitude at x,y is within settings
 			{
 				//if all of those are true, then assign a weight of 1.0f so that the texture shows at x,y
 				splatWeights [q] = 1.0f; 
 				break;
 			}
 		}
-	}
-
-	/// <summary>
-	/// Creates the terrain splat weights based on the temperature.
-	/// </summary>
-	/// <param name="splatWeights">Splat weights.</param>
-	/// <param name="chunk">ChunkData object of terrain</param>
-	/// <param name="y">y value of current point in terrain alphamap</param>
-	/// <param name="x">x value of current point in terrain alphamap</param>
-	private void CreateHeatSplatWeights(float[] splatWeights, ChunkData chunk, int y, int x)
-	{
-		float temp = (chunk.temperatureMap [x, y]); //get the temperature at x,y
-		splatWeights [0] = temp; //Set the red (hot) texture to the value of the temperature (1.0 is highest = all red)
-		splatWeights [1] = 1.0f - temp; //set the blue (cold) texture to the value of 1-temperature (1.0 is highest = all blue)
-		//so if temperature is 0.5 then equal blend between red and blue textures.
-	}
-
-	/// <summary>
-	/// Creates the terrain splat weights based on the amount of rainfall.
-	/// </summary>
-	/// <param name="splatWeights">Splat weights.</param>
-	/// <param name="chunk">ChunkData object of terrain</param>
-	/// <param name="y">y value of current point in terrain alphamap</param>
-	/// <param name="x">x value of current point in terrain alphamap</param>
-	private void CreateRainSplatWeights(float[] splatWeights, ChunkData chunk, int y, int x)
-	{
-		float rain = (chunk.precipitationMap [x, y]); //get the amount of rainfall at x,y
-		splatWeights [0] = rain; //Set the dark-blue (heavy rain) texture to the value of the rainfall (1.0 is highest = all dark-blue)
-		splatWeights [1] = 1.0f - rain; //set the light-blue (light rain) texture to the value of 1-rain (1.0 is highest = all light-blue)
-		//so if rainfall amount is 0.5 then equal blend between dark-blue and light-blue textures.
 	}
 
 	/// <summary>
@@ -267,8 +230,8 @@ public class TextureManager : MonoBehaviour
 	private TextureSetting[] CreateHeatTextureSetting()
 	{
 		TextureSetting[] HeatTextures = new TextureSetting[2];
-		HeatTextures [0] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/cold"));
-		HeatTextures [1] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/hot"));
+		HeatTextures [0] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/cold"), null);
+		HeatTextures [1] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/hot"), null);
 		return HeatTextures;
 	}
 
@@ -279,8 +242,8 @@ public class TextureManager : MonoBehaviour
 	private TextureSetting[] CreateRainTextureSetting()
 	{
 		TextureSetting[] HeatTextures = new TextureSetting[2];
-		HeatTextures [0] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/cold"));
-		HeatTextures [1] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/colder"));
+		HeatTextures [0] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/cold"), null);
+		HeatTextures [1] = new TextureSetting (0.0f, 1.0f, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f, 1.0f, (Texture2D)Resources.Load ("Textures/colder"), null);
 		return HeatTextures;
 	}
 }

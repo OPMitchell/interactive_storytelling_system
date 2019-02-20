@@ -30,12 +30,14 @@ public class ReceivingQueue : EventPriorityQueue
             //respond
             foreach (Response r in ResponseList)
             {
-                if(r.Name == receivedAction.Name && r.Sender == receivedAction.Sender && r.DialogID == receivedAction.DialogID)
+                if(r.Name == receivedAction.Name && (r.Sender == receivedAction.Sender || r.Sender == "*") && r.DialogID == receivedAction.DialogID)
                 {
                     Action response = r.Action;
+                    if (response.Sender == "*")
+                        response.Sender = receivedAction.Sender;
                     if (response.Target == "*")
                         response.Target = receivedAction.Sender;
-                    GetComponent<ActionQueue>().QueueAction(response);            
+                    GetComponent<ActionQueue>().QueueAction(response);        
                 }
             }
         }

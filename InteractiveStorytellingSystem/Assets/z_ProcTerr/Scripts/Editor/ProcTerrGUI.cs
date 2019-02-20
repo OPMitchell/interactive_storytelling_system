@@ -31,3 +31,18 @@ public class ProcTerrGUI : Editor
 	}
 
 }
+
+[CustomEditor (typeof (TextureManager))]
+public class TextureManagerGui : Editor
+{
+	public override void OnInspectorGUI()
+	{
+		TextureManager t = (TextureManager)target;
+
+		DrawDefaultInspector();
+		if(GUILayout.Button("Texture Terrain"))
+		{
+			t.TextureChunk();
+		}
+	}
+}

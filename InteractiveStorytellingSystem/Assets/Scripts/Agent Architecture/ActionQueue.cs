@@ -25,10 +25,13 @@ public class ActionQueue : EventPriorityQueue
     {
         if(!queue.IsEmpty() && !GetComponent<ActionExecutor>().Executing)
         {
-            Testing.PrintMessage(Testing.GetActionQueue(transform));
             Action action = queue.Remove();
-            StartCoroutine(Execute(action));
+            if(!GameManager.FindGameObject(action.Target).GetComponent<ActionExecutor>().Executing)
+                StartCoroutine(Execute(action));
+            else
+                queue.Add(action.Priority, action);
         }
+        
     }
 
     private IEnumerator Execute(Action action)
@@ -40,10 +43,9 @@ public class ActionQueue : EventPriorityQueue
         if(action.Status == Status.Successful)
         {
             Transform target = GameManager.FindGameObject(action.Target).transform;
-            if(target.GetComponent<ReceivingQueue>() != null)
+            if(target.GetComponent<ReceivingQueue>() != null && target.tag == "Character")
                 target.GetComponent<ReceivingQueue>().QueueAction(action);
         }
     }
-
 
 }

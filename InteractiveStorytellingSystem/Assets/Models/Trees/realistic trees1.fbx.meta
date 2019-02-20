@@ -10,6 +10,8 @@ ModelImporter:
     100008: tree1
     100010: tree2
     100012: tree3
+    100014: Camera
+    100016: Lamp
     400000: -Camera
     400002: //RootNode
     400004: Sun
@@ -17,7 +19,10 @@ ModelImporter:
     400008: tree1
     400010: tree2
     400012: tree3
+    400014: Camera
+    400016: Lamp
     2000000: -Camera
+    2000002: Camera
     2100000: leaves2
     2100002: bark2
     2100004: leaves1
@@ -33,7 +38,28 @@ ModelImporter:
     4300004: tree1
     10800000: Sun
     10800002: Sun.001
-  externalObjects: {}
+    10800004: Lamp
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bark1
+    second: {fileID: 2100000, guid: 9c77d301b48f0344fb9ed3f54ca1c72c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bark2
+    second: {fileID: 2100000, guid: 934a30c7dec965742a28984c11334229, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: leaves1
+    second: {fileID: 2100000, guid: d3f28ab6be5e0b5428f7ea8c5c84b066, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: leaves2
+    second: {fileID: 2100000, guid: 7cf015628c4c82946b113e0b117e6d4c, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

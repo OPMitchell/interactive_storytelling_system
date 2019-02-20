@@ -155,7 +155,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 							}
 							else
 							{
-								Testing.PrintMessage("Found replacement action!");
+								Testing.PrintMessage("Found replacement action! " + Testing.GetActionInfo(action));
 							}
 							break;
 						}

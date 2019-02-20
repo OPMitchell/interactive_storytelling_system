@@ -10,7 +10,7 @@ public abstract class EventPriorityQueue : MonoBehaviour
 
     public void QueueAction(Action action)
     {
-        queue.Add(1, action); //TODO: implement priority system!
+        queue.Add(action.Priority, action); //TODO: implement priority system!
     }
 
     void Update()

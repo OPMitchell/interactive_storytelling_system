@@ -32,6 +32,8 @@ public class ActionDirectory : MonoBehaviour
 	public List<Action> FindActionsByEffect(string target, string effect)
 	{
 		string[] split = GameManager.SplitParameterString(effect);
+		if(split[0] == "inventory" || split[1] == "location")
+			return FindActionsByParameterOperationAndValue(target, split[0], split[1], split[2]);
 		return FindActionsByParameterAndOperation(target, split[0], split[1]);
 	}
 

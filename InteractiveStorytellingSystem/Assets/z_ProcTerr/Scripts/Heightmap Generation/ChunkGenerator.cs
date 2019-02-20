@@ -19,7 +19,7 @@ public class ChunkGenerator : MonoBehaviour
 	/// </summary>
 	public void Generate()
 	{
-		DeleteOldTerrain (); //Delete any existing terrains in the scene
+		//DeleteOldTerrain (); //Delete any existing terrains in the scene
 		manager = GetComponent<HeightmapGenerationManager> (); //get reference to heightmapgenerationmanager script
 		layers = GetComponent<TerrainLayers> (); //get reference to layered data representation
 
@@ -49,7 +49,7 @@ public class ChunkGenerator : MonoBehaviour
 
 				chunks[x,y].OffsetChunk(x,y); //offset the chunk to avoid overlapping terrain chunks
 
-				GetComponent<TextureManager> ().TextureChunk(chunks[x,y]); //Texture the chunk (Terrain object's alphamap)
+				//GetComponent<TextureManager> ().TextureChunk(chunks[x,y]); //Texture the chunk (Terrain object's alphamap)
 			}
 		}
 	}
@@ -65,7 +65,7 @@ public class ChunkGenerator : MonoBehaviour
 			for (int x = 0; x < dimension; x++) 
 			{
 				ErosionManager.ApplyErosion(this, chunks[x,y]); //apply erosion
-				GetComponent<TextureManager> ().TextureChunk(chunks[x,y]); //retexture
+				//GetComponent<TextureManager> ().TextureChunk(chunks[x,y]); //retexture
 			}
 		}
 	}
@@ -105,7 +105,7 @@ public class ChunkGenerator : MonoBehaviour
 	{
 		foreach (ChunkData c in chunks) 
 		{
-			GetComponent<TextureManager> ().TextureChunk (c);
+			//GetComponent<TextureManager> ().TextureChunk (c);
 		}
 	}
 

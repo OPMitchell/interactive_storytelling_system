@@ -1,4 +1,4 @@
 <Actions>
-	<Action name="Greeting" type="TalkToTarget" sender="Rachel" target="Bob" dialogid="Hello" precondition="" effect=""/>
-	<Action name="WalkToBob" type="WalkToTarget" sender="Rachel" target="Bob" dialogid="" precondition="" effect=""/>
+	<Action name="Greeting" type="TalkToTarget" sender="Rachel" target="Bob" dialogid="Hello" precondition="" effect="" priority="5"/>
+	<Action name="WalkToBob" type="WalkToTarget" sender="Rachel" target="Bob" dialogid="" precondition="" effect="" priority="5"/>
 </Actions>

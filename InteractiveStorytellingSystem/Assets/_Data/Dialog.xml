@@ -11,4 +11,10 @@
 	<Dialog dialogid="GiveFlowers">
 		<Value>Here are some flowers for you %t!</Value>
 	</Dialog>
+	<Dialog dialogid="Scream">
+		<Value>AAAAAAAHHHHHHHHHH!!!!</Value>
+	</Dialog>
+	<Dialog dialogid="ThankYou_GiveFlowers">
+		<Value>Oh wow! Thank you so much %t!</Value>
+	</Dialog>
 </Dialogs>

@@ -31,12 +31,27 @@ namespace InteractiveStorytellingSystem
         public string Effect { get; set; }
         [XmlAttribute("parameters")]
         public string Parameters { get; set; }
-
+        [XmlAttribute("priority")]
+        public int Priority { get; set; }
         public Status Status{ get; set; }
 
 
         public Action()
         {
+            Status = Status.notSent;
+        }
+
+        public Action(string name, string type, string sender, string target, string dialogid, string precondition, string effect, string parameters, int priority)
+        {
+            Name = name;
+            Type = type;
+            Sender = sender;
+            Target = target;
+            DialogID = dialogid;
+            Precondition = precondition;
+            Effect = effect;
+            Parameters = parameters;
+            Priority = priority;
             Status = Status.notSent;
         }
 
@@ -118,6 +133,7 @@ namespace InteractiveStorytellingSystem
             this.Precondition = newAction.Precondition;
             this.Effect = newAction.Effect;
             this.Parameters = newAction.Parameters;
+            this.Priority = newAction.Priority;
         }
 
         public bool Compare(Action a)
@@ -130,6 +146,7 @@ namespace InteractiveStorytellingSystem
             && this.Precondition == a.Precondition
             && this.Effect == a.Effect
             && this.Parameters == a.Parameters
+            && this.Priority == a.Priority
             )
                 return true;
             return false;

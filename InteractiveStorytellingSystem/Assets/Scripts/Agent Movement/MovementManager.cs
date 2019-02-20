@@ -10,10 +10,12 @@ public class MovementManager : MonoBehaviour
 	{
 		Idle = 1,
 		Walking = 2,
-		Turning = 3
+		Turning = 3,
+		Fleeing = 4
 	}
 
     [SerializeField] private float speed;
+	private NavMeshAgent agent;
 	private Animator animator;
     private GameObject player;
 	public MovementType movementType { get; private set; }
@@ -23,6 +25,7 @@ public class MovementManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		agent = GetComponent<NavMeshAgent>();
 		animator = GetComponent<Animator>();
         player = GameObject.Find("FPSController");
 		movementType = MovementType.Idle;
@@ -41,6 +44,9 @@ public class MovementManager : MonoBehaviour
 			case MovementType.Turning:
 				Movement_TurnToTarget(target);
 				break;
+			case MovementType.Fleeing:
+				Movement_FleeFromTarget(target);
+				break;
 		}
 	}
 
@@ -55,12 +61,11 @@ public class MovementManager : MonoBehaviour
 	{
 		if(target != null)
 		{
-			NavMeshAgent agent = GetComponent<NavMeshAgent>();
 			if(Vector3.Distance(transform.position, target.transform.position) > 2.0f)
 			{
 				agent.isStopped = false;
 				animator.SetBool("IsWalking", true);
-				LookAtTarget(target);
+				agent.speed = 2.0f;
           		agent.destination = target.position; 
 			}
 			else
@@ -68,10 +73,38 @@ public class MovementManager : MonoBehaviour
 			    agent.isStopped = true;
 				animator.SetFloat("IdleOffset", Random.Range(0.0f, 0.8f));
 				animator.SetBool("IsWalking", false);
-				LookAtTarget(target);
 				SetMovementType(MovementType.Idle);
 			}
 		}
+	}
+
+	private void Movement_FleeFromTarget(Transform target)
+	{
+		if(target != null)
+		{
+			if(Vector3.Distance(transform.position, target.transform.position) <= 11.0f)
+			{
+				Vector3 moveDirection = transform.position - target.transform.position;
+				Vector3 newPos = transform.position + moveDirection;
+				agent.isStopped = false;
+				animator.SetBool("IsWalking", true);
+				agent.speed = 3.0f;
+				agent.destination = newPos;
+			}
+			else
+			{
+			    agent.isStopped = true;
+				animator.SetFloat("IdleOffset", Random.Range(0.0f, 0.8f));
+				animator.SetBool("IsWalking", false);
+				SetMovementType(MovementType.Idle);
+			} 
+		}
+	}
+
+	public void FleeFromTarget(Transform t)
+	{
+		target = t;
+		SetMovementType(MovementType.Fleeing);
 	}
 
 	public void WalkToTarget(Transform t)

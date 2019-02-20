@@ -43,4 +43,10 @@ public static class GameManager
 		}
 		return (T)Convert.ChangeType(result, typeof(T));
 	}
+
+	public static List<GameObject> GetAllCharacters()
+	{
+		List<GameObject> characters = GameObject.FindGameObjectsWithTag("Character").ToList();
+		return characters;
+	}
 }
