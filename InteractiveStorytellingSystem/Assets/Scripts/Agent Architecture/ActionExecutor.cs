@@ -9,6 +9,7 @@ namespace InteractiveStorytellingSystem
     public class ActionExecutor : MonoBehaviour
     {
         public bool Executing {get; private set;}
+        public Action currentAction {get; private set;}
 
         void Start()
         {
@@ -18,9 +19,10 @@ namespace InteractiveStorytellingSystem
         public IEnumerator ExecuteAction(Action action)
         {
             Executing = true;
+            currentAction = action;
             GameObject sender = GameObject.Find(action.Sender);
             GameObject target = GameObject.Find(action.Target);
-            if(target != null)
+            if(target != null && Executing)
             {       
                 if(action.Type == "WalkToTarget")
                 {
@@ -33,10 +35,11 @@ namespace InteractiveStorytellingSystem
                     catch(NullReferenceException ex)
                     {
                         CancelAction(action);
-                        Testing.PrintMessage(transform.name + " tried to walk to target: " + target.transform.name + " but that object doesn't exist in the scene.");
+                        Testing.WriteToLog(transform.name, "Error whilst executing action: " + Testing.GetActionInfo(action));
+                        Testing.WriteToLog(transform.name, "    Tried to walk to target: " + target.transform.name + " but that object doesn't exist in the scene.");
                     }
                     if(itemExists)
-                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    yield return new WaitUntil(() => Vector3.Distance(transform.position, target.transform.position) <= 2.0f);
                     CompleteAction(action);
                 }
                 else if(action.Type == "FollowTarget")
@@ -62,11 +65,12 @@ namespace InteractiveStorytellingSystem
                     catch(NullReferenceException ex)
                     {
                         CancelAction(action);
-                        Testing.PrintMessage(transform.name + " tried to pick up item: " + action.Parameters + " but that item doesn't exist in the scene.");
+                        Testing.WriteToLog(transform.name, "Error whilst executing action: " + Testing.GetActionInfo(action));
+                        Testing.WriteToLog(transform.name, "    Tried to pick up item: " + action.Parameters + " but that item doesn't exist in the scene.");
                     }
                     if(itemExists)
                     {
-                        yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                        yield return new WaitUntil(() => Vector3.Distance(transform.position, GameManager.FindGameObject(action.Parameters).transform.position) <= 2.0f);
                         GetComponent<Inventory>().Add(action.Parameters);
                         yield return new WaitForSeconds(1.0f);
                         CompleteAction(action);
@@ -74,35 +78,43 @@ namespace InteractiveStorytellingSystem
                 }
                 else if(action.Type == "GiveItem")
                 {
-                    GetComponent<MovementManager>().WalkToTarget(target.transform);
-                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
-                    TalkToTarget(sender, target, action, true);
-                    yield return new WaitForSeconds(4);
-                    GetComponent<Inventory>().Remove(action.Parameters);
-                    CompleteAction(action);
+                    if(GetComponent<Inventory>().Contains(action.Parameters))
+                    {
+                        GetComponent<MovementManager>().WalkToTarget(target.transform);
+                        yield return new WaitUntil(() => Vector3.Distance(transform.position, target.transform.position) <= 2.0f);
+                        GetComponent<Inventory>().Remove(action.Parameters);
+                        TalkToTarget(sender, target, action, true);
+                        yield return new WaitForSeconds(4);
+                        CompleteAction(action);
+                    }
+                    else
+                        CancelAction(action);
                 }
                 else if(action.Type == "TalkToTarget")
                 {
                     GetComponent<MovementManager>().WalkToTarget(target.transform);
-                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    yield return new WaitUntil(() => Vector3.Distance(transform.position, target.transform.position) <= 2.0f);
                     TalkToTarget(sender, target, action, true);
+                    CompleteAction(action);
                 }
                 else if(action.Type == "FleeFromSender")
                 {
                     TalkToTarget(sender, target, action, false);
                     GetComponent<MovementManager>().FleeFromTarget(sender.transform);
-                    yield return new WaitUntil(() => GetComponent<MovementManager>().movementType == MovementManager.MovementType.Idle);
+                    yield return new WaitUntil(() => Vector3.Distance(transform.position, sender.transform.position) > 10.0f);
                     CompleteAction(action);
                 }
                 else
                 {
-                    Debug.Log("Unknown action: " + Testing.GetActionInfo(action));    
+                    Testing.WriteToLog(transform.name, "Error whilst executing action: " + Testing.GetActionInfo(action));
+                    Testing.WriteToLog(transform.name, "    The action was unknown.");  
                     CancelAction(action);
                 }
             }
             else
             {
-                Debug.Log("Target is null for action: " + Testing.GetActionInfo(action));
+                Testing.WriteToLog(transform.name, "Error whilst executing action: " + Testing.GetActionInfo(action));
+                Testing.WriteToLog(transform.name, "    target is null.");
                 CancelAction(action);
             }
         }
@@ -128,26 +140,42 @@ namespace InteractiveStorytellingSystem
             t.text = dialog;
             yield return new WaitForSeconds(4);
             t.text = "";
-            CompleteAction(action);
         }
 
         private void CancelAction(Action action)
         {
-            Debug.Log("Action Failed: " + Testing.GetActionInfo(action));
-            action.Status = Status.Failed;
-            StopExecuting();
+            if(Executing)
+            {
+                Testing.WriteToLog(transform.name, "Action failed: " + Testing.GetActionInfo(action));
+                action.Status = Status.Failed;
+                StopExecuting();
+            }
         }
 
         private void CompleteAction(Action action)
         {
-            Debug.Log("Action Successful: "+ Testing.GetActionInfo(action) + "\nSending confirmation to target for appraisal!");
-            action.Status = Status.Successful;
-            StopExecuting();
+            if(Executing)
+            {
+                Testing.WriteToLog(transform.name, "Action successful: " + Testing.GetActionInfo(action));
+                action.Status = Status.Successful;
+                StopExecuting();
+            }
+        }
+
+        public void InterruptAction()
+        {
+            if(Executing)
+            {
+                Testing.WriteToLog(transform.name, "Action interrupted: " + Testing.GetActionInfo(currentAction));
+                currentAction.Status = Status.Interrupted;
+                StopExecuting();
+            }
         }
 
         private void StopExecuting()
         {
             Executing = false;
+            currentAction = null;
         }
 
 

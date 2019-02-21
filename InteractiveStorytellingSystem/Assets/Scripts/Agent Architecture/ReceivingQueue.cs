@@ -25,7 +25,6 @@ public class ReceivingQueue : EventPriorityQueue
         if(!queue.IsEmpty())
         {
             Action receivedAction = queue.Remove();
-            Debug.Log(transform.name + " received action: " + receivedAction.Name + " from sender: " + receivedAction.Sender);
             //analyse action
             //respond
             foreach (Response r in ResponseList)
@@ -40,6 +39,7 @@ public class ReceivingQueue : EventPriorityQueue
                     GetComponent<ActionQueue>().QueueAction(response);        
                 }
             }
+            Testing.WriteToLog(transform.name, "Received action: " + Testing.GetActionInfo(receivedAction));
         }
     }
 

@@ -1,0 +1,229 @@
+2/21/2019 9:47:51 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 9:47:51 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 9:47:52 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:47:52 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:47:52 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:47:52 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 9:47:52 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 9:47:52 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:47:52 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 9:47:58 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:47:58 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:47:58 AM - Received action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:01 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:01 AM - Action interrupted: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:01 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:02 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:02 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:02 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:02 AM - Action failed: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:03 AM - Action successful: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:03 AM - Completed goal: happiness greaterthan 0.1
+2/21/2019 9:48:10 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 9:48:10 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 9:48:11 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:48:11 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:48:11 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:48:11 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 9:48:11 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 9:48:11 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:11 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 9:48:14 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:14 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:14 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:16 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:16 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:16 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:17 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:18 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:18 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:18 AM - Action interrupted: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:18 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:21 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:21 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:21 AM - Action failed: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:21 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:25 AM - Action successful: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:25 AM - Completed goal: happiness greaterthan 0.1
+2/21/2019 9:48:25 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:25 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:25 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:25 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:26 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:35 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 9:48:35 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 9:48:35 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:48:35 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:48:35 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:48:35 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 9:48:35 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 9:48:35 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:35 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 9:48:38 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:38 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:38 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:40 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:40 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:40 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:48:41 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:41 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:48 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:48:49 AM - Action successful: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:48:49 AM - Completed goal: happiness greaterthan 0.1
+2/21/2019 9:51:27 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 9:51:27 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 9:51:27 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:51:27 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:51:27 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:51:27 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 9:51:27 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 9:51:27 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:51:27 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 9:51:32 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:51:32 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:51:32 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:51:33 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:51:33 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:51:33 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:51:34 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:51:34 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:51:39 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:57:28 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 9:57:28 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 9:57:29 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:57:29 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:57:29 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:57:29 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 9:57:29 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 9:57:29 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:57:29 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 9:57:32 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:57:32 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:57:32 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:57:33 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:57:33 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:57:33 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:57:34 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:57:34 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:58:18 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 9:58:18 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 9:58:19 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:58:19 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:58:19 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:58:19 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 9:58:19 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 9:58:19 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:19 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 9:58:21 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:21 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:21 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:25 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:25 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:25 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:26 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:26 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:58:31 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:31 AM - Action interrupted: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 9:58:31 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:35 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 9:58:35 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 9:58:36 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:58:36 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:58:36 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 9:58:36 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 9:58:36 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 9:58:36 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:36 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 9:58:39 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:39 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:39 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:51 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:51 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:51 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 9:58:52 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 9:58:52 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 10:02:40 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 10:02:40 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 10:02:41 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:02:41 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:02:41 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:02:41 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 10:02:41 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 10:02:41 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:02:41 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 10:02:44 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:02:44 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:02:44 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:03:49 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 10:03:49 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 10:03:50 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:03:50 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:03:50 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:03:50 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 10:03:50 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 10:03:50 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:03:50 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 10:03:52 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:03:52 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:03:52 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:03:55 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:03:55 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:03:55 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:04:00 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:04:00 AM - Received action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:04:57 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 10:04:57 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 10:04:58 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:04:58 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:04:58 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:04:58 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 10:04:58 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 10:04:58 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:04:58 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 10:05:01 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:01 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:01 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:03 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:03 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:03 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:08 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:08 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 10:05:08 AM - Received action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:13 AM - Action successful: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 10:05:13 AM - Completed goal: happiness greaterthan 0.1
+2/21/2019 10:05:13 AM - Received action: Action(name = ThankYou_GiveFlowers, sender = Rachel, target = Bob, precondition = , effect = )
+2/21/2019 10:05:21 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:21 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:24 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:24 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:30 AM - created a plan for goal: hunger lessthan 0.5
+2/21/2019 10:05:30 AM - created a plan for goal: happiness greaterthan 0.1
+2/21/2019 10:05:31 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:05:31 AM - Action failed: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:05:31 AM - Error whilst executing action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread)
+2/21/2019 10:05:31 AM -     Tried to pick up item: bread but that item doesn't exist in the scene.
+2/21/2019 10:05:31 AM - Could not find a replacement action for failed action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains bread). Attempting to replan...
+2/21/2019 10:05:31 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:31 AM - cancelled goal: hunger lessthan 0.5 because a plan is impossible to make.
+2/21/2019 10:05:35 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:35 AM - Action interrupted: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:35 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:35 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:35 AM - Action started: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:35 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:38 AM - Action successful: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:38 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 10:05:38 AM - Received action: Action(name = PickUpItem, sender = Bob, target = Bob, precondition = , effect = inventory contains flowers)
+2/21/2019 10:05:38 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:38 AM - Action interrupted: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 10:05:38 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:41 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:41 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:42 AM - Received action: Action(name = WolfChase, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:42 AM - Action started: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:44 AM - Action successful: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:44 AM - Received action: Action(name = Flee, sender = Wolf, target = Bob, precondition = , effect = )
+2/21/2019 10:05:45 AM - Action started: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 10:05:51 AM - Action successful: Action(name = GiveFlowers, sender = Bob, target = Rachel, precondition = inventory contains flowers, effect = happiness + 0.1)
+2/21/2019 10:05:51 AM - Completed goal: happiness greaterthan 0.1
+2/21/2019 10:05:51 AM - Received action: Action(name = ThankYou_GiveFlowers, sender = Rachel, target = Bob, precondition = , effect = )

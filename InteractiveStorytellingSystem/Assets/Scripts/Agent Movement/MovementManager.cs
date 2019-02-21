@@ -125,7 +125,9 @@ public class MovementManager : MonoBehaviour
 				transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
 			}
 			else
+			{
 				SetMovementType(MovementType.Idle);
+			}
 		}
     }
 
@@ -147,5 +149,4 @@ public class MovementManager : MonoBehaviour
 	{
 		movementType = mt;
 	}
-
 }

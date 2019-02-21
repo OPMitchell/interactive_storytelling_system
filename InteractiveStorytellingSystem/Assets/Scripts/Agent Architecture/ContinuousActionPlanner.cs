@@ -109,12 +109,12 @@ public class ContinuousActionPlanner : MonoBehaviour
 					{
 						// Set the goal to complete and it will be removed from the collection the next time Update() is run.
 						g.Complete = true;
-						Debug.Log(transform.name + " cancelled Goal: " + g.Parameters + " because a plan is impossible to make.");
+						Testing.WriteToLog(transform.name, "cancelled goal: " + g.Parameters + " because a plan is impossible to make.");
 					}
 					// If we successfully constructed one or more plans then we need to pick one for the agent to use.
 					else
 					{
-						Debug.Log(transform.name + " created a plan for Goal: " + g.Parameters);
+						Testing.WriteToLog(transform.name, "created a plan for goal: " + g.Parameters);
 						//pick a plan from List<LinkedList<Action>> plans and assign to g.plan
 						g.SetPlan(planList.GetBestPlan());
 					}
@@ -141,11 +141,11 @@ public class ContinuousActionPlanner : MonoBehaviour
 							g.AddFailedAction(action);
 							if(!ReplaceAction(action, g.FailedActions))
 							{
-								Testing.PrintMessage("Couldn't find replacement action! Attempting to replan...");
+								Testing.WriteToLog(transform.name, "Could not find a replacement action for failed action: " + Testing.GetActionInfo(action) + ". Attempting to replan...");
 								g.TimesFailed++;
 								if(g.TimesFailed >= maxFail)
 								{
-									Testing.PrintMessage("Failed to replan more than max allowance!");
+									Testing.WriteToLog(transform.name, "Exceeded maximum replan allowance for goal: " + g.Parameters);
 									g.Complete = true;
 								}
 								else
@@ -155,7 +155,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 							}
 							else
 							{
-								Testing.PrintMessage("Found replacement action! " + Testing.GetActionInfo(action));
+								Testing.WriteToLog(transform.name, "Found replacement action: " + Testing.GetActionInfo(action));
 							}
 							break;
 						}
@@ -163,6 +163,11 @@ public class ContinuousActionPlanner : MonoBehaviour
 						else if(action.Status == Status.notSent)
 						{
 							GetComponent<ActionQueue>().QueueAction(action);
+							action.SetStatus(Status.Sent);
+							break;
+						}
+						else if(action.Status == Status.Interrupted)
+						{
 							action.SetStatus(Status.Sent);
 							break;
 						}
@@ -174,7 +179,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 					// If all actions have been executed then the goal has been reached and can be removed.
 					if(g.Plan != null && g.Plan.CountActions() <= 0)
 					{
-						Debug.Log(transform.name + " completed Goal: " + g.Parameters + "!");
+						Testing.WriteToLog(transform.name, "Completed goal: " + g.Parameters);
 						g.Complete = true;
 					}
 				}

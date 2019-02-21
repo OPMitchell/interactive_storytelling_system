@@ -10,7 +10,8 @@ namespace InteractiveStorytellingSystem
         notSent = 1,
         Sent = 2,
         Failed = 3,
-        Successful = 4
+        Successful = 4,
+        Interrupted = 5,
     };
 
     public class Action

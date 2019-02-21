@@ -19,7 +19,7 @@ public class WolfController : MonoBehaviour
 
 	void Update()
 	{
-		chasing = GameObject.Find("Player");
+		NotifyCharactersOfChase();
 		SelectCharacterToChase();
 		ChaseCharacter();
 	}
@@ -35,8 +35,17 @@ public class WolfController : MonoBehaviour
 				min = current;
 				chasing = c;
 			}
-			if(current < 10.0f)
+		}
+	}
+
+	private void NotifyCharactersOfChase()
+	{
+		foreach(GameObject c in GameManager.GetAllCharacters())
+		{
+			if(Distance(c) < 10.0f)
+			{
 				NotifyCharacterOfChase(c);
+			}
 		}
 	}
 
@@ -103,12 +112,17 @@ public class WolfController : MonoBehaviour
 
 	private void NotifyCharacterOfChase(GameObject c)
 	{
-		if(c.transform.name != "Player")
+		if(c.transform.name != "Player" && !c.GetComponent<ActionQueue>().ContainsActionType("FleeFromSender"))
 		{
-			if(!c.GetComponent<ActionExecutor>().Executing)
+			bool valid = true;
+			if(c.GetComponent<ActionExecutor>().currentAction != null)
 			{
-				Testing.PrintMessage(c.transform.name + " is fleeing from " + transform.name + "!");
-				Action wolfChase = new Action("WolfChase", "Chased", transform.name, chasing.transform.name, "", "", "", "", 0);
+				if(c.GetComponent<ActionExecutor>().currentAction.Type == "FleeFromSender")
+					valid = false;
+			}
+			if(valid)
+			{
+				Action wolfChase = new Action("WolfChase", "Chased", transform.name, c.transform.name, "", "", "", "", 0);
 				c.GetComponent<ReceivingQueue>().QueueAction(wolfChase);
 			}
 		}

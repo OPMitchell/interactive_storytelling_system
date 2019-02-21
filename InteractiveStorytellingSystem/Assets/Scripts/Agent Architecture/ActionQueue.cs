@@ -6,6 +6,8 @@ using InteractiveStorytellingSystem.ConfigReader;
 
 public class ActionQueue : EventPriorityQueue
 {
+    Coroutine coroutine;
+
     void Start()
     {
         //[TESTING]]
@@ -23,11 +25,17 @@ public class ActionQueue : EventPriorityQueue
 
     public override void CheckQueue()
     {
+        if(!queue.IsEmpty() && GetComponent<ActionExecutor>().Executing && queue.Peek().Priority == 0 && GetComponent<ActionExecutor>().currentAction.Priority != 0)
+        {
+            Action save = GetComponent<ActionExecutor>().currentAction;
+            GetComponent<ActionExecutor>().InterruptAction();
+            queue.Add(save.Priority, save);
+        }
         if(!queue.IsEmpty() && !GetComponent<ActionExecutor>().Executing)
         {
             Action action = queue.Remove();
             if(!GameManager.FindGameObject(action.Target).GetComponent<ActionExecutor>().Executing)
-                StartCoroutine(Execute(action));
+                coroutine = StartCoroutine(Execute(action));
             else
                 queue.Add(action.Priority, action);
         }
@@ -37,7 +45,7 @@ public class ActionQueue : EventPriorityQueue
     private IEnumerator Execute(Action action)
     {
         string actionInfo = Testing.GetActionInfo(action);
-        Debug.Log(actionInfo + " has been started");
+        Testing.WriteToLog(transform.name, "Action started: " + Testing.GetActionInfo(action));
         StartCoroutine(GetComponent<ActionExecutor>().ExecuteAction(action));
         yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
         if(action.Status == Status.Successful)

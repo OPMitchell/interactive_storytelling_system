@@ -23,6 +23,16 @@ namespace InteractiveStorytellingSystem
             return pq[0].Value;
         }
 
+        public bool ContainsActionType(string actionType)
+        {
+            foreach(var kvp in pq)
+            {
+                if(kvp.Value.Type == actionType)
+                    return true;
+            }
+            return false;
+        }
+
         public Action Remove()
         {
             Action min = pq[0].Value;
