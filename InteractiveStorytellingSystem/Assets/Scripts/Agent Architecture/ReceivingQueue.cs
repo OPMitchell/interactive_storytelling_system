@@ -8,6 +8,7 @@ public class ReceivingQueue : EventPriorityQueue
 {
     [SerializeField] private TextAsset ResponseListFile;
     public List<Response> ResponseList {get; private set;}
+    private MemoryManager memoryManager;
 
     private void CreateResponseList()
     {
@@ -17,6 +18,7 @@ public class ReceivingQueue : EventPriorityQueue
     void Start()
     {
         CreateResponseList();
+        memoryManager = GetComponent<MemoryManager>();
     }
 
     public override void CheckQueue()
@@ -26,6 +28,8 @@ public class ReceivingQueue : EventPriorityQueue
         {
             Action receivedAction = queue.Remove();
             //analyse action
+            //store in memory
+            StoreMemory(receivedAction);
             //respond
             foreach (Response r in ResponseList)
             {
@@ -41,6 +45,18 @@ public class ReceivingQueue : EventPriorityQueue
             }
             Testing.WriteToLog(transform.name, "Received action: " + Testing.GetActionInfo(receivedAction));
         }
+    }
+
+    private void StoreMemory(Action action)
+    {
+        string description = CreateMemoryDescription(action);
+        MemoryPattern newMemory = new MemoryPattern(0, action.Keywords, action.Type, 0.0f, description);
+        memoryManager.AddMemoryPattern(newMemory);
+    }
+
+    private string CreateMemoryDescription(Action action)
+    {
+        return "";
     }
 
 }

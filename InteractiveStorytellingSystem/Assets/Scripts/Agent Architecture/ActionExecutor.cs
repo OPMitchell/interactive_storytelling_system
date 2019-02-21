@@ -83,7 +83,7 @@ namespace InteractiveStorytellingSystem
                         GetComponent<MovementManager>().WalkToTarget(target.transform);
                         yield return new WaitUntil(() => Vector3.Distance(transform.position, target.transform.position) <= 2.0f);
                         GetComponent<Inventory>().Remove(action.Parameters);
-                        TalkToTarget(sender, target, action, true);
+                        StartCoroutine(TalkToTarget(sender, target, action, true));
                         yield return new WaitForSeconds(4);
                         CompleteAction(action);
                     }
@@ -94,12 +94,12 @@ namespace InteractiveStorytellingSystem
                 {
                     GetComponent<MovementManager>().WalkToTarget(target.transform);
                     yield return new WaitUntil(() => Vector3.Distance(transform.position, target.transform.position) <= 2.0f);
-                    TalkToTarget(sender, target, action, true);
+                    StartCoroutine(TalkToTarget(sender, target, action, true));
                     CompleteAction(action);
                 }
                 else if(action.Type == "FleeFromSender")
                 {
-                    TalkToTarget(sender, target, action, false);
+                    StartCoroutine(TalkToTarget(sender, target, action, false));
                     GetComponent<MovementManager>().FleeFromTarget(sender.transform);
                     yield return new WaitUntil(() => Vector3.Distance(transform.position, sender.transform.position) > 10.0f);
                     CompleteAction(action);
@@ -119,7 +119,7 @@ namespace InteractiveStorytellingSystem
             }
         }
 
-        private void TalkToTarget(GameObject sender, GameObject target, Action action, bool turn)
+        private IEnumerator TalkToTarget(GameObject sender, GameObject target, Action action, bool turn)
         {
             TextMesh textMesh = transform.Find("DialogBox").GetComponent<TextMesh>();
             foreach(Dialog d in DialogManager.Dialog)
@@ -130,16 +130,11 @@ namespace InteractiveStorytellingSystem
                     speech =  speech.Replace("%t", action.Target);
                     if(turn)
                         GetComponent<MovementManager>().TurnToTarget(target.transform);
-                    StartCoroutine(Speak(action, textMesh, speech));
+                    textMesh.text = speech;
+                    yield return new WaitForSeconds(4);
+                    textMesh.text = "";
                 }
             }
-        }
-
-        IEnumerator Speak(Action action, TextMesh t, string dialog)
-        {
-            t.text = dialog;
-            yield return new WaitForSeconds(4);
-            t.text = "";
         }
 
         private void CancelAction(Action action)

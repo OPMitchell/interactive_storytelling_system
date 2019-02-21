@@ -104,10 +104,8 @@ public class WolfController : MonoBehaviour
 	private void MoveToTarget(float speed)
 	{
 		agent.isStopped = false;
-		//Vector3 moveDirection = chasing.transform.position - transform.position;
-		//Vector3 newPos = transform.position + moveDirection;
 		agent.speed = speed;
-		agent.destination = chasing.transform.position; 
+		agent.destination = chasing.transform.position;
 	}
 
 	private void NotifyCharacterOfChase(GameObject c)

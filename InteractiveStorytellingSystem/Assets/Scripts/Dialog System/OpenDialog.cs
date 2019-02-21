@@ -5,11 +5,11 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class OpenDialog : MonoBehaviour 
 {
-  	Ray ray;
-    RaycastHit hit;
+	Ray ray;
+	RaycastHit hit;
 	GameObject dialogUI;
 	GameObject characterNameUI;
-     
+		
 	void Start()
 	{
 		dialogUI = GameObject.Find("DialogUI");
@@ -25,6 +25,7 @@ public class OpenDialog : MonoBehaviour
 		{
 			if(hit.collider.tag == "Character")
 			{
+				string name = hit.collider.transform.name;
 				if(CheckIfPlayerWithinRange(hit.collider.transform.position, 2.75f))
 				{
 					if(!dialogUI.activeInHierarchy)
@@ -33,7 +34,7 @@ public class OpenDialog : MonoBehaviour
 						characterNameUI.SetActive(false);
 					if(Input.GetKeyDown(KeyCode.E))
 					{
-							ToggleDialogUI();
+							ToggleDialogUI(name);
 					}
 				}
 			}
@@ -55,26 +56,37 @@ public class OpenDialog : MonoBehaviour
 		characterNameUI.GetComponentInChildren<UnityEngine.UI.Text>().text = name;
 	}
 
-	void ToggleDialogUI()
+	void SetDialogUIName(string name)
+	{
+		GameObject.Find("Name").GetComponentInChildren<UnityEngine.UI.Text>().text = name;
+	}
+
+	void ToggleDialogUI(string name)
 	{
 		if(dialogUI.activeInHierarchy)
 			CloseDialogUI();
 		else
-			ShowDialogUI();
+			ShowDialogUI(name);
 	}
 
-	void ShowDialogUI()
+	void ShowDialogUI(string name)
 	{
 		dialogUI.SetActive (true);
+		SetDialogUIName(name);
 		GetComponent<FirstPersonController>().enabled = false;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
+		MemoryManager mem = GameManager.FindGameObject(name).GetComponent<MemoryManager>();
+		DialogUIManager.SetTarget(mem);
+		if(mem != null)
+			GameObject.Find("Content").GetComponent<TopicScrollList>().CreateTopics(mem.memoryPool);
 	}
 
 	void CloseDialogUI()
 	{
 		dialogUI.SetActive (false);
 		GetComponent<FirstPersonController>().enabled = true;
+		DialogUIManager.SetTarget(null);
 	}
 
 	bool CheckIfPlayerWithinRange(Vector3 obj, float range)
