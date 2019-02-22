@@ -9,7 +9,6 @@ public class MemoryManager : MonoBehaviour
 	void Start () 
 	{
 		memoryPool = new MemoryPool();
-		AddMemoryPattern(new MemoryPattern(0, new string[]{"Walk", "Beach", "Sunset", "Jason"}, MemoryType.social, 0.0f, "I walked along the beach at sunset with Jason"));
 	}
 
 	public MemoryPattern RetrieveMemoryPattern(string keyword)

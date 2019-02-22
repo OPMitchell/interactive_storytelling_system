@@ -1,14 +1,14 @@
 <Responses>
 	<Response name="Greeting" sender="Bob" dialogid="Hello">
-		<Action name="ScrewYou" type="TalkToTarget" sender="Rachel" target="Bob" dialogid="Insult" precondition="" effect="" parameters="" priority="5"/>
-	</Response>
-	<Response name="SadResponse" sender="Bob" dialogid="Insult_SadResponse">
-    	<Action name="FollowPlayer" type="FollowTarget" sender="Rachel" target="Player" dialogid="" precondition="" effect="" parameters="" priority="5"/>
+		<Action name="ScrewYou" type="TalkToTarget" sender="Rachel" target="Bob" dialogid="Insult" precondition="" effect="" parameters="" priority="5" keywords=""/>
 	</Response>
 	<Response name="WolfChase" sender="*" dialogid="">
-		<Action name="Flee" type="FleeFromSender" sender="*" target="Rachel" dialogid="Scream" precondition="" effect="" parameters="" priority="0"/>
+		<Action name="Flee" type="FleeFromSender" sender="*" target="Rachel" dialogid="Scream" precondition="" effect="" parameters="" priority="0" keywords="Rachel,fled,*"/>
 	</Response>
 	<Response name="GiveFlowers" sender="*" dialogid="GiveFlowers">
-		<Action name="ThankYou_GiveFlowers" type="TalkToTarget" sender="Rachel" target="*" dialogid="ThankYou_GiveFlowers" precondition="" effect="" parameters="" priority="5"/>
+		<Action name="ThankYou_GiveFlowers" type="TalkToTarget" sender="Rachel" target="*" dialogid="ThankYou_GiveFlowers" precondition="" effect="" parameters="" priority="5" keywords="Rachel,thanked,%tgt"/>
+	</Response>
+	<Response name="ComplimentTarget" sender="*" dialogid="Compliment1">
+		<Action name="ThankYou_Compliment" type="TalkToTarget" sender="Rachel" target="*" dialogid="ThankYou_Compliment" precondition="" effect="" parameters="" priority="5" keywords="Rachel,thanked,%tgt"/>
 	</Response>
 </Responses>

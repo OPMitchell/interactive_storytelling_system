@@ -1,9 +1,9 @@
 <Actions>
-	<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" effect="" parameters="" priority="4"/>
+	<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" effect="" parameters="" priority="4" keywords="Bob,spoke,Rachel"/>
 
-	<Action name="EatBread" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="inventory contains bread" effect="hunger - 0.1" parameters="" priority="5"/>
-	<Action name="GiveFlowers" type="GiveItem" sender="Bob" target="%tgt" dialogid="GiveFlowers" precondition="inventory contains flowers" effect="happiness + 0.1" parameters="flowers" priority="5"/>
-
-	<Action name="PickUpItem" type="PickUpItem" sender="Bob" target="Bob" dialogid="" precondition="" effect="inventory contains %val" parameters="%val" priority="5"/>
-	<Action name="WalkToTarget" type="WalkToTarget" sender="Bob" target="%tgt" dialogid="" precondition="" effect="location at %tgt" parameters="" priority="5"/>
+	<Action name="EatBread" type="IncreaseStat" sender="Bob" target="Bob" dialogid="" precondition="inventory contains bread" effect="hunger - 0.1" parameters="" priority="5" keywords="Bob,ate,bread"/>
+	<Action name="GiveFlowers" type="GiveItem" sender="Bob" target="%tgt" dialogid="GiveFlowers" precondition="inventory contains flowers" effect="happiness + 0.1" parameters="flowers" priority="5" keywords="Bob,gave,%tgt,flowers"/>
+	<Action name="ComplimentTarget" type="TalkToTarget" sender="Bob" target="%tgt" dialogid="Compliment1" precondition="" effect="happiness + 0.05" parameters="" priority="5" keywords="Bob,complimented,%tgt"/>
+	<Action name="PickUpItem" type="PickUpItem" sender="Bob" target="Bob" dialogid="" precondition="" effect="inventory contains %val" parameters="%val" priority="5" keywords="Bob,picked-up,%val"/>
+	<Action name="WalkToTarget" type="WalkToTarget" sender="Bob" target="%tgt" dialogid="" precondition="" effect="location at %tgt" parameters="" priority="5" keywords="Bob,walked,%tgt"/>
 </Actions>

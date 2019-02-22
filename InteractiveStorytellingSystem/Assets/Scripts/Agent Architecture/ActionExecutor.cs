@@ -56,6 +56,8 @@ namespace InteractiveStorytellingSystem
                 }
                 else if(action.Type == "PickUpItem")
                 {
+                    if(CancelAction(action))
+                        yield break;
                     bool itemExists = false;
                     try
                     {
@@ -64,9 +66,10 @@ namespace InteractiveStorytellingSystem
                     }
                     catch(NullReferenceException ex)
                     {
-                        CancelAction(action);
                         Testing.WriteToLog(transform.name, "Error whilst executing action: " + Testing.GetActionInfo(action));
                         Testing.WriteToLog(transform.name, "    Tried to pick up item: " + action.Parameters + " but that item doesn't exist in the scene.");
+                        if(CancelAction(action))
+                            yield break;
                     }
                     if(itemExists)
                     {
@@ -88,7 +91,10 @@ namespace InteractiveStorytellingSystem
                         CompleteAction(action);
                     }
                     else
-                        CancelAction(action);
+                    {
+                        if(CancelAction(action))
+                            yield break;
+                    }
                 }
                 else if(action.Type == "TalkToTarget")
                 {
@@ -108,14 +114,16 @@ namespace InteractiveStorytellingSystem
                 {
                     Testing.WriteToLog(transform.name, "Error whilst executing action: " + Testing.GetActionInfo(action));
                     Testing.WriteToLog(transform.name, "    The action was unknown.");  
-                    CancelAction(action);
+                    if(CancelAction(action))
+                        yield break;
                 }
             }
             else
             {
                 Testing.WriteToLog(transform.name, "Error whilst executing action: " + Testing.GetActionInfo(action));
                 Testing.WriteToLog(transform.name, "    target is null.");
-                CancelAction(action);
+                if(CancelAction(action))
+                    yield break;
             }
         }
 
@@ -137,14 +145,16 @@ namespace InteractiveStorytellingSystem
             }
         }
 
-        private void CancelAction(Action action)
+        private bool CancelAction(Action action)
         {
             if(Executing)
             {
                 Testing.WriteToLog(transform.name, "Action failed: " + Testing.GetActionInfo(action));
                 action.Status = Status.Failed;
                 StopExecuting();
+                return true;
             }
+            return false;
         }
 
         private void CompleteAction(Action action)

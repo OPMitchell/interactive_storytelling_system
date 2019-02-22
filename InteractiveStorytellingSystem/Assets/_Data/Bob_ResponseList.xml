@@ -1,11 +1,11 @@
 <Responses>
 	<Response name="WalkToBob" sender="Rachel" dialogid="">
-		<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" effect="" parameters="" priority="5"/>
+		<Action name="Greeting" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Hello" precondition="" effect="" parameters="" priority="5" keywords="Bob,spoke,Rachel"/>
 	</Response>
 	<Response name="ScrewYou" sender="Rachel" dialogid="Insult">
-		<Action name="SadResponse" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Insult_SadResponse" precondition="" effect="" parameters="" priority="5"/>
+		<Action name="SadResponse" type="TalkToTarget" sender="Bob" target="Rachel" dialogid="Insult_SadResponse" precondition="" effect="" parameters="" priority="5" keywords="Bob,spoke,Rachel"/>
 	</Response> 
 	<Response name="WolfChase" sender="*" dialogid="">
-		<Action name="Flee" type="FleeFromSender" sender="*" target="Bob" dialogid="Scream" precondition="" effect="" parameters="" priority="0"/>
+		<Action name="Flee" type="FleeFromSender" sender="*" target="Bob" dialogid="Scream" precondition="" effect="" parameters="" priority="0" keywords="Bob,fled,*"/>
 	</Response>
 </Responses>

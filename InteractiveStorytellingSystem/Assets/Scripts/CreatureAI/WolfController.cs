@@ -120,7 +120,7 @@ public class WolfController : MonoBehaviour
 			}
 			if(valid)
 			{
-				Action wolfChase = new Action("WolfChase", "Chased", transform.name, c.transform.name, "", "", "", "", 0);
+				Action wolfChase = new Action("WolfChase", "Chased", transform.name, c.transform.name, "", "", "", "", 0, "Wolf,chased,%tgt");
 				c.GetComponent<ReceivingQueue>().QueueAction(wolfChase);
 			}
 		}

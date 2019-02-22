@@ -80,6 +80,7 @@ public class OpenDialog : MonoBehaviour
 		DialogUIManager.SetTarget(mem);
 		if(mem != null)
 			GameObject.Find("Content").GetComponent<TopicScrollList>().CreateTopics(mem.memoryPool);
+		GameObject.Find("Dialogue").GetComponent<UnityEngine.UI.Text>().text = "";
 	}
 
 	void CloseDialogUI()

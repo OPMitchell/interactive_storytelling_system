@@ -34,15 +34,16 @@ namespace InteractiveStorytellingSystem
         public string Parameters { get; set; }
         [XmlAttribute("priority")]
         public int Priority { get; set; }
+        [XmlAttribute("keywords")]
+        public string Keywords { get; set; }
         public Status Status{ get; set; }
-
 
         public Action()
         {
             Status = Status.notSent;
         }
 
-        public Action(string name, string type, string sender, string target, string dialogid, string precondition, string effect, string parameters, int priority)
+        public Action(string name, string type, string sender, string target, string dialogid, string precondition, string effect, string parameters, int priority, string keywords)
         {
             Name = name;
             Type = type;
@@ -53,6 +54,7 @@ namespace InteractiveStorytellingSystem
             Effect = effect;
             Parameters = parameters;
             Priority = priority;
+            Keywords = keywords;
             Status = Status.notSent;
         }
 
@@ -60,6 +62,27 @@ namespace InteractiveStorytellingSystem
         {
             Replace(a);
             Status = Status.notSent;
+        }
+
+        public string[] GetKeywords()
+        {
+            string[] keywords = ((string)Keywords.Clone()).Split(',');
+            for(int i = 0; i < keywords.Length; i++)
+            {
+                switch(keywords[i])
+                {
+                    case "*":
+                        keywords[i] = Sender;
+                        break;
+                    case "%tgt":
+                        keywords[i] = Target;
+                        break;
+                    case "%val":
+                        keywords[i] = Parameters;
+                        break;
+                }
+            }
+            return keywords;
         }
 
         public bool HasPrecondition()
@@ -135,6 +158,7 @@ namespace InteractiveStorytellingSystem
             this.Effect = newAction.Effect;
             this.Parameters = newAction.Parameters;
             this.Priority = newAction.Priority;
+            this.Keywords = newAction.Keywords;
         }
 
         public bool Compare(Action a)
@@ -148,6 +172,7 @@ namespace InteractiveStorytellingSystem
             && this.Effect == a.Effect
             && this.Parameters == a.Parameters
             && this.Priority == a.Priority
+            && this.Keywords == a.Keywords
             )
                 return true;
             return false;

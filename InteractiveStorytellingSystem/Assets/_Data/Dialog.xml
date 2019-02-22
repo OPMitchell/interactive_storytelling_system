@@ -17,4 +17,10 @@
 	<Dialog dialogid="ThankYou_GiveFlowers">
 		<Value>Oh wow! Thank you so much %t!</Value>
 	</Dialog>
+	<Dialog dialogid="ThankYou_Compliment">
+		<Value>Oh %t thank you! You're so sweet.</Value>
+	</Dialog>
+	<Dialog dialogid="Compliment1">
+		<Value>%t, you're looking lovely today.</Value>
+	</Dialog>
 </Dialogs>

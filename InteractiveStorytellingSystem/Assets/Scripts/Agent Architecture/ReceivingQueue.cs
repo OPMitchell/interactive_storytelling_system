@@ -49,14 +49,36 @@ public class ReceivingQueue : EventPriorityQueue
 
     private void StoreMemory(Action action)
     {
+        string[] keywords = action.GetKeywords();
         string description = CreateMemoryDescription(action);
-        MemoryPattern newMemory = new MemoryPattern(0, action.Keywords, action.Type, 0.0f, description);
+        MemoryPattern newMemory = new MemoryPattern(0, keywords, action.Type, 0.0f, description);
         memoryManager.AddMemoryPattern(newMemory);
     }
 
     private string CreateMemoryDescription(Action action)
     {
-        return "";
+        string[] keywords = action.GetKeywords();
+        string description = "";
+        for(int i = 0; i < keywords.Length; i++)
+        {
+            if(keywords[i] == transform.name && i==0)
+                keywords[i] = "I";
+            else if(keywords[i] == transform.name && i!=0)
+                keywords[i] = "me";
+
+            switch(keywords[i])
+            {
+                case "walked":
+                    keywords[i] = "walked to";
+                    break;
+                case "spoke":
+                    keywords[i] = "spoke to";
+                    break;
+            }
+
+            description += keywords[i] + " ";
+        }
+        return description;
     }
 
 }

@@ -53,6 +53,7 @@ public class ActionQueue : EventPriorityQueue
             Transform target = GameManager.FindGameObject(action.Target).transform;
             if(target.GetComponent<ReceivingQueue>() != null && target.tag == "Character")
                 target.GetComponent<ReceivingQueue>().QueueAction(action);
+            GetComponent<ReceivingQueue>().QueueAction(action);
         }
     }
 
